@@ -1,26 +1,12 @@
-# Maak het bord
+# Build the board
 board = [['. ']*8 for i in range(8)]
-board[0][0] = 'Rb'
-board[0][7] = 'Rb'
-board[0][1] = 'Nb'
-board[0][6] = 'Nb'
-board[0][2] = 'Bb'
-board[0][5] = 'Bb'
-board[0][3] = 'Qb'
-board[0][4] = 'Kb'
 
+# Add the pieces
+lineUp = "RNBQKBNR"
+board[0] = [x+'b' for x in lineUp]
 board[1] = ['Pb']*8
-
-board[7][0] = 'Rw'
-board[7][7] = 'Rw'
-board[7][1] = 'Nw'
-board[7][6] = 'Nw'
-board[7][2] = 'Bw'
-board[7][5] = 'Bw'
-board[7][3] = 'Qw'
-board[7][4] = 'Kw'
-
 board[6] = ['Pw']*8
+board[7] = [x+'w' for x in lineUp]
 
 def printboard():
   print()
