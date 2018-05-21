@@ -1,14 +1,14 @@
 class chessboard:
   # Squares
-  b = [['. ']*8 for i in range(8)]
+  b = [['.']*8 for i in range(8)]
 
   def __init__(self):
     # Add the pieces
     lineUp = "RNBQKBNR"
-    self.b[0] = [x+'b' for x in lineUp]
-    self.b[1] = ['Pb']*8
-    self.b[6] = ['Pw']*8
-    self.b[7] = [x+'w' for x in lineUp]
+    self.b[0] = list(lineUp.lower())
+    self.b[1] = ['p']*8
+    self.b[6] = ['P']*8
+    self.b[7] = list(lineUp)
 
   def print(self):
     print()
@@ -20,7 +20,7 @@ class chessboard:
 
   def move(self, origin, destination):
     self.b[destination[0]][destination[1]] = self.b[origin[0]][origin[1]]
-    self.b[origin[0]][origin[1]] = '. '
+    self.b[origin[0]][origin[1]] = '.'
 
 board = chessboard()
 board.print()
