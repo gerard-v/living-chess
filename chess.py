@@ -1,28 +1,38 @@
+import sys
+from string import digits
+
 class chessboard:
   # Squares
-  b = [['.']*8 for i in range(8)]
+  board = [['.']*8 for i in range(8)]
 
-  def __init__(self):
+  def __init__(self, setup='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'):
     # Add the pieces
-    lineUp = "RNBQKBNR"
-    self.b[0] = list(lineUp.lower())
-    self.b[1] = ['p']*8
-    self.b[6] = ['P']*8
-    self.b[7] = list(lineUp)
+    lines = setup.split('/')
+    for i in range(8):
+      x = 0
+      for j in lines[i]:
+        if j in digits:
+          x += int(j)
+        else:
+          self.board[i][x] = j
+          x += 1
 
   def print(self):
     print()
-    for i in range(8):
-      for j in range(8):
-        print(self.b[i][j], end=' ')
+    for rank in self.board:
+      for square in rank:
+        print(square, end=' ')
       print()
     print()
 
   def move(self, origin, destination):
-    self.b[destination[0]][destination[1]] = self.b[origin[0]][origin[1]]
-    self.b[origin[0]][origin[1]] = '.'
+    self.board[destination[0]][destination[1]] = self.board[origin[0]][origin[1]]
+    self.board[origin[0]][origin[1]] = '.'
 
-board = chessboard()
+if len(sys.argv)>1:
+  board = chessboard(sys.argv[1])
+else:
+  board = chessboard() # 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
 board.print()
 color = 'w'
 print("White to move")
