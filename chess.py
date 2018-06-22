@@ -5,9 +5,13 @@ class chessboard:
   # Squares
   board = [['.']*8 for i in range(8)]
 
-  def __init__(self, setup='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'):
-    # Add the pieces
-    lines = setup.split('/')
+  def __init__(self, fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'):
+    # Split FEN record into fields
+    fields = fen.split(' ')
+    # Set color of player to move
+    self.color = fields[1]
+    # Setup position
+    lines = fields[0].split('/')
     for i in range(8):
       x = 0
       for j in lines[i]:
@@ -30,14 +34,17 @@ class chessboard:
     self.board[origin[0]][origin[1]] = '.'
 
 if len(sys.argv)>1:
-  board = chessboard(sys.argv[1])
+  board = chessboard(sys.argv[1]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
 else:
-  board = chessboard() # 'rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R'
+  board = chessboard()
 board.print()
-color = 'w'
-print("White to move")
 
 while True :
+  if board.color == 'w':
+    print("White to move")
+  else:
+    print("Black to move")
+
   origin = input("Move from: ")
   origin = ('87654321'.index(origin[1]),'abcdefgh'.index(origin[0]))
   destination = input("Move to: ")
@@ -46,14 +53,9 @@ while True :
   board.move(origin,destination)
   board.print()
   # Switch between black and white
-  if color == 'b':
-    color = 'w'
-    print("White to move")
+  if board.color == 'b':
+    board.color = 'w'
   else:
-    color = 'b'
-    print("Black to move")
-
-
-
+    board.color = 'b'
 
 
