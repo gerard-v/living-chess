@@ -1,0 +1,11 @@
+How does a piece know where it can go? (Later: where it wants to go)
+
+A piece is only aware of the square it is on, and can "ask" questions to that square:
+- what fields are reachable from here? (which square can "feel" me)
+- (secondary:) what enemies are on reachable spots
+
+The field the queen is on gets a request from the queen itself.
+It passes that request on to N, NE, E, SE, S, SW, W and NW.
+Each of those squares passes the request on in the opposite direction, and so on until the boundary is reached.
+Finally the last reachable square passes itself as an object back to the former, the former adds itself to that list, and so on.
+
