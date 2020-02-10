@@ -66,7 +66,7 @@ class chessboard:
   #board = [[square()]*8 for i in range(8)]
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
-  def __init__(self, fen='8/8/8/8/8/8/8/4K3 w - - 0 1'): # rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+  def __init__(self, fen='4k3/8/8/8/8/8/8/4K3 w - - 0 1'): # rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
     self.squares = [[square() for i in range(8)] for j in range(8)]
     for i in range(8):
       for j in range(8):
@@ -106,6 +106,8 @@ class chessboard:
     
     
     self.whitePieces = []
+    self.blackPieces = []
+
     print(fen);
     # Split FEN record into fields
     fields = fen.split(' ')
@@ -125,6 +127,11 @@ class chessboard:
             print('i==K') # debug
             self.squares[x][j].setKing(king('white', self.squares[x][j])) # bind the King to the square
             self.whitePieces.append(self.squares[x][j].getPiece()) # add white king to collection of white pieces
+            
+          if i=='k':
+            print('i==k') # debug
+            self.squares[x][j].setKing(king('black', self.squares[x][j])) # bind the King to the square
+            self.blackPieces.append(self.squares[x][j].getPiece()) # add black king to collection of black pieces  
           x += 1
 
   #  self.whitePieces = []
@@ -139,7 +146,8 @@ class chessboard:
       p.wakeUp()
 
   def nightFall(self):
-    pass
+    for p in self.blackPieces:
+      p.wakeUp()
 
   def print(self):
     print()
