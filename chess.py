@@ -18,6 +18,9 @@ class square:
   def getPiece(self):
     return self.piece
 
+  def clear(self):
+    self.piece = None
+
   def setKing(self, king):
     self.piece = king
 
@@ -36,6 +39,11 @@ class king:
     else:
       return 'k'
 
+  def moveTo(self, square):
+    self.square.clear()
+    self.square = square
+    self.square.setKing(self)
+
   def wakeUp(self):
     print("The %s king wakes up" %self.color);
     print(self.square.name)
@@ -51,6 +59,7 @@ class king:
     print(options)
     r = choice(options)
     print(r.name)
+    self.moveTo(r)
 
 class chessboard:
   # Squares
