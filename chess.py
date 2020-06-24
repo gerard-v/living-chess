@@ -2,7 +2,7 @@ import sys
 from string import digits
 from random import choice
 
-class square:
+class Square:
   def __init__(self):
     self.piece = None
     self.name = ""
@@ -14,24 +14,56 @@ class square:
     else:
       return '.'
 
-
   def getPiece(self):
     return self.piece
 
   def clear(self):
     self.piece = None
 
-  def setKing(self, king):
-    self.piece = king
+  def whoControls(self):
+    pass
+
+  def setPiece(self, piece):
+    self.piece = piece
 
   def containsPiece(self):
-    return False;
+    if self.piece:
+      return True
+    else:
+      return False
 
-class king:
+class Piece:
   def __init__(self, color, square):
     assert color in ['black', 'white']
     self.color = color
     self.square = square
+
+  def moveTo(self, square):
+    self.square.clear()
+    self.square = square
+    self.square.setPiece(self)
+    
+  def wakeUp(self):
+    print("The", self.color, type(self).__name__, "wakes up");
+    #print(self.square.name)
+    #print(self.square.neighbours)
+    
+    # feel/listen: sense what squares are a no-go
+    options = []
+    for i in self.square.neighbours:
+      # ask who controls the square
+      options.append(self.square.neighbours[i])
+      #print(i,self.square.neighbours[i].name)
+    
+    # make a move
+    #print(options)
+    r = choice(options)
+    print("Moving to", r.name)
+    self.moveTo(r)
+
+class King(Piece):
+  def __init__(self, color, square):
+    Piece.__init__(self, color, square)
 
   def __str__(self):
     if (self.color=='white'):
@@ -39,35 +71,34 @@ class king:
     else:
       return 'k'
 
-  def moveTo(self, square):
-    self.square.clear()
-    self.square = square
-    self.square.setKing(self)
-
   def wakeUp(self):
-    print("The %s king wakes up" %self.color);
-    print(self.square.name)
-    print(self.square.neighbours)
-    
-    # feel/listen: sense what squares are a no-go
-    options = []
-    for i in self.square.neighbours:
-      options.append(self.square.neighbours[i])
-      #print(i,self.square.neighbours[i].name)
-    
-    # make a move
-    print(options)
-    r = choice(options)
-    print(r.name)
-    self.moveTo(r)
+    Piece.wakeUp(self)
 
-class chessboard:
+  def announcePresence(self):
+    pass
+    
+class Queen(Piece):
+  def __init__(self, color, square):
+    Piece.__init__(self, color, square)
+
+  def __str__(self):
+    if (self.color=='white'):
+      return 'Q'
+    else:
+      return 'q'
+  
+  def wakeUp(self):
+    Piece.wakeUp(self)
+
+class Chessboard:
+  pieces = {'k': King, 'q': Queen}
   # Squares
-  #board = [[square()]*8 for i in range(8)]
+  #board = [[Square()]*8 for i in range(8)]
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
-  def __init__(self, fen='4k3/8/8/8/8/8/8/4K3 w - - 0 1'): # rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    self.squares = [[square() for i in range(8)] for j in range(8)]
+  # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+  def __init__(self, fen='3qk3/8/8/8/8/8/8/3QK3 w - - 0 1'):
+    self.squares = [[Square() for i in range(8)] for j in range(8)]
     for i in range(8):
       for j in range(8):
         self.squares[i][j].name = "abcdefgh"[i]+"12345678"[j]
@@ -122,23 +153,44 @@ class chessboard:
         if i in digits:
           x += int(i)
         else:
+          
           #self.board[j][x] = i
           if i=='K':
             print('i==K') # debug
-            self.squares[x][j].setKing(king('white', self.squares[x][j])) # bind the King to the square
-            self.whitePieces.append(self.squares[x][j].getPiece()) # add white king to collection of white pieces
+            self.squares[x][j].setPiece(King('white', self.squares[x][j])) # bind the King to the square
             
           if i=='k':
             print('i==k') # debug
-            self.squares[x][j].setKing(king('black', self.squares[x][j])) # bind the King to the square
-            self.blackPieces.append(self.squares[x][j].getPiece()) # add black king to collection of black pieces  
+            self.squares[x][j].setPiece(King('black', self.squares[x][j])) # bind the King to the square
+            
+          if i=='Q':
+            print('i==Q') # debug
+            self.squares[x][j].setPiece(Queen('white', self.squares[x][j])) # bind the Queen to the square
+
+          if i=='q':
+            print('i==q') # debug
+            self.squares[x][j].setPiece(Queen('black', self.squares[x][j])) # bind the Queen to the square
+
           x += 1
 
-  #  self.whitePieces = []
-  #  for line in self.board:
-  #    for i in line:
-  #      if str(i) in ['RNBQKBNR']:
-  #        self.whitePieces.append(i)
+    # Assign the white and black pieces to their respective armies
+    for j in range(2): # idee: getPiece().getColor() gebruiken, zodat we slechts één for-loop nodig hebben voor alle stukken
+      x = 0
+      for i in lines[7-j]:
+        if i in digits:
+          x += int(i)
+        else:
+          self.whitePieces.append(self.squares[x][j].getPiece())
+          x += 1
+
+    for j in range(0,2):
+      x = 0
+      for i in lines[7-j]:
+        if i in digits:
+          x += int(i)
+        else:
+          self.blackPieces.append(self.squares[x][7-j].getPiece())
+          x += 1
 
 
   def dayBreak(self):
@@ -168,13 +220,14 @@ class chessboard:
     self.board[origin[0]][origin[1]] = '.'
 
 if len(sys.argv)>1:
-  board = chessboard(sys.argv[1]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
+  board = Chessboard(sys.argv[1]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
 else:
-  board = chessboard()
+  board = Chessboard()
 board.print()
 
 while True :
   input("Press enter to continue day/night cycle.");
+  print("")
 
   if board.color == 'w':
     print("White to move")
@@ -183,16 +236,7 @@ while True :
     print("Black to move")
     board.nightFall()
 
-  #origin = input("Move from: ")
-  #origin = ('87654321'.index(origin[1]),'abcdefgh'.index(origin[0]))
-  #destination = input("Move to: ")
-  #destination = ('87654321'.index(destination[1]),'abcdefgh'.index(destination[0]))
-
-  #board.move(origin,destination)
   board.print()
-  for piece in board.whitePieces:
-    print(piece)
-  #print(board.whitePieces)
   # Switch between black and white
   if board.color == 'b':
     board.color = 'w'

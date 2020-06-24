@@ -11,3 +11,12 @@
       0               7  = i
 	  
 	  
+TODO:
+- have a physical chessboard on the table always!
+
+- idea: add goToSleep as counterpart to wakeUp, to announce presence a.o.
+- question: should we see the vibrations as coninuously present or as events?... 
+- king and queen should inherit from piece (e.g. moveTo is generic)
+- add function setPiece, refactor lines 129-139 (putting piece objects on the board)
+- refactor determination of neighbours for squares
+- CRC cards
