@@ -3,10 +3,11 @@ from string import digits
 from random import choice
 
 class Square:
-  def __init__(self):
+  def __init__(self, name, board):
     self.piece = None
-    self.name = ""
+    self.name = name
     self.neighbours = {}
+    self.board = board
 
   def __str__(self):
     if self.getPiece():
@@ -24,6 +25,13 @@ class Square:
     pass
 
   def setPiece(self, piece):
+    oldPiece = self.getPiece()
+    if oldPiece:
+      if oldPiece.color=='white':
+        self.board.whitePieces.remove(oldPiece)
+      if oldPiece.color=='black':
+        self.board.blackPieces.remove(oldPiece)
+      print('piece captured, color: ' + oldPiece.color)
     self.piece = piece
 
   def containsPiece(self):
@@ -44,19 +52,17 @@ class Piece:
     self.square.setPiece(self)
     
   def wakeUp(self):
+    # Roll-call
     print("The", self.color, type(self).__name__, "wakes up");
     #print(self.square.name)
     #print(self.square.neighbours)
     
     # feel/listen: sense what squares are a no-go
-    options = []
-    for i in self.square.neighbours:
-      # ask who controls the square
-      options.append(self.square.neighbours[i])
-      #print(i,self.square.neighbours[i].name)
+    options = self.getOptions()
     
     # make a move
     #print(options)
+    
     r = choice(options)
     print("Moving to", r.name)
     self.moveTo(r)
@@ -64,6 +70,7 @@ class Piece:
 class King(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.options = []
 
   def __str__(self):
     if (self.color=='white'):
@@ -71,12 +78,17 @@ class King(Piece):
     else:
       return 'k'
 
-  def wakeUp(self):
-    Piece.wakeUp(self)
-
   def announcePresence(self):
     pass
     
+  def getOptions(self):
+    self.options = []
+    for d in self.square.neighbours:
+      if len(d) < 3:
+        self.options.append(self.square.neighbours[d])
+    print(self.options)
+    return self.options
+      
 class Queen(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
@@ -86,55 +98,27 @@ class Queen(Piece):
       return 'Q'
     else:
       return 'q'
-  
-  def wakeUp(self):
-    Piece.wakeUp(self)
 
 class Chessboard:
   pieces = {'k': King, 'q': Queen}
+  # These directions are used to connect the squares
+  directions = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
+
   # Squares
   #board = [[Square()]*8 for i in range(8)]
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='3qk3/8/8/8/8/8/8/3QK3 w - - 0 1'):
-    self.squares = [[Square() for i in range(8)] for j in range(8)]
+  def __init__(self, fen='4k3/8/8/8/8/8/8/4K3 w - - 0 1'):
+    
+    self.squares = [[Square("abcdefgh"[i]+"12345678"[j], self) for j in range(8)] for i in range(8)]
     for i in range(8):
       for j in range(8):
-        self.squares[i][j].name = "abcdefgh"[i]+"12345678"[j]
-    
-    for i in range(8):
-      for j in range(7):
-        self.squares[i][j].neighbours["N"] = self.squares[i][j+1]
-    
-    for i in range(7):
-      for j in range(8):
-        self.squares[i][j].neighbours["E"] = self.squares[i+1][j]
-    
-    for i in range(8):
-      for j in range(1,8):
-        self.squares[i][j].neighbours["S"] = self.squares[i][j-1]
-
-    for i in range(1,8):
-      for j in range(8):
-        self.squares[i][j].neighbours["W"] = self.squares[i-1][j]
-    
-    for i in range(7):
-      for j in range(7):
-        self.squares[i][j].neighbours["NE"] = self.squares[i+1][j+1]
-    
-    for i in range(7):
-      for j in range(1,8):
-        self.squares[i][j].neighbours["SE"] = self.squares[i+1][j-1]
-    
-    for i in range(1,8):
-      for j in range(1,8):
-        self.squares[i][j].neighbours["SW"] = self.squares[i-1][j-1]
-    
-    for i in range(1,8):
-      for j in range(7):
-        self.squares[i][j].neighbours["NW"] = self.squares[i-1][j+1]
-    
+        for d in self.directions:
+          deltai = d.count("E") - d.count("W")
+          deltaj = d.count("N") - d.count("S")
+          if 0<=i+deltai<8 and 0<=j+deltaj<8:
+            self.squares[i][j].neighbours[d] = self.squares[i+deltai][j+deltaj]
     
     self.whitePieces = []
     self.blackPieces = []
