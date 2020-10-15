@@ -54,17 +54,11 @@ class Piece:
   def wakeUp(self):
     # Roll-call
     print("The", self.color, type(self).__name__, "wakes up");
-    #print(self.square.name)
-    #print(self.square.neighbours)
-    
     # feel/listen: sense what squares are a no-go
     options = self.getOptions()
     
-    # make a move
-    #print(options)
-    
     r = choice(options)
-    print("Moving to", r.name)
+    print(str(self).upper()+str(self.square.name)+"-"+r.name)
     self.moveTo(r)
 
 class King(Piece):
@@ -86,7 +80,6 @@ class King(Piece):
     for d in self.square.neighbours:
       if len(d) < 3:
         self.options.append(self.square.neighbours[d])
-    print(self.options)
     return self.options
       
 class Queen(Piece):
@@ -123,7 +116,6 @@ class Chessboard:
     self.whitePieces = []
     self.blackPieces = []
 
-    print(fen);
     # Split FEN record into fields
     fields = fen.split(' ')
     # Set color of player to move
@@ -133,26 +125,21 @@ class Chessboard:
     for j in range(8):
       x = 0
       for i in lines[7-j]:
-        print(i)
         if i in digits:
           x += int(i)
         else:
           
           #self.board[j][x] = i
           if i=='K':
-            print('i==K') # debug
             self.squares[x][j].setPiece(King('white', self.squares[x][j])) # bind the King to the square
             
           if i=='k':
-            print('i==k') # debug
             self.squares[x][j].setPiece(King('black', self.squares[x][j])) # bind the King to the square
             
           if i=='Q':
-            print('i==Q') # debug
             self.squares[x][j].setPiece(Queen('white', self.squares[x][j])) # bind the Queen to the square
 
           if i=='q':
-            print('i==q') # debug
             self.squares[x][j].setPiece(Queen('black', self.squares[x][j])) # bind the Queen to the square
 
           x += 1
@@ -210,6 +197,15 @@ else:
 board.print()
 
 while True :
+
+  if not board.blackPieces:
+    print("White wins!")
+    exit()
+
+  if not board.whitePieces:
+    print("Black wins!")
+    exit()
+
   input("Press enter to continue day/night cycle.");
   print("")
 
