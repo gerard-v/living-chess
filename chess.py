@@ -10,7 +10,7 @@ class Square:
     self.board = board
 
   def __str__(self):
-    if self.getPiece():
+    if self.piece:
       return str(self.piece)
     else:
       return '.'
@@ -33,12 +33,6 @@ class Square:
         self.board.blackPieces.remove(oldPiece)
       print('piece captured, color: ' + oldPiece.color)
     self.piece = piece
-
-  def containsPiece(self):
-    if self.piece:
-      return True
-    else:
-      return False
 
 class Piece:
   def __init__(self, color, square):
@@ -92,6 +86,13 @@ class Queen(Piece):
     else:
       return 'q'
 
+  def getOptions(self):
+    self.options = []
+    for d in self.square.neighbours:
+      if len(d) < 3:
+        self.options.append(self.square.neighbours[d])
+    return self.options
+
 class Chessboard:
   pieces = {'k': King, 'q': Queen}
   # These directions are used to connect the squares
@@ -102,7 +103,7 @@ class Chessboard:
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='4k3/8/8/8/8/8/8/4K3 w - - 0 1'):
+  def __init__(self, fen='3qk3/8/8/8/8/8/8/3QK3 w - - 0 1'):
     
     self.squares = [[Square("abcdefgh"[i]+"12345678"[j], self) for j in range(8)] for i in range(8)]
     for i in range(8):
