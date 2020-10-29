@@ -51,7 +51,7 @@ class Piece:
     # feel/listen: sense what squares are a no-go
     options = self.getOptions()
     
-    r = choice(options)
+    r = choice([o for o in options if not o.piece or o.piece.color != self.color])
     print(str(self).upper()+str(self.square.name)+"-"+r.name)
     self.moveTo(r)
 
@@ -166,12 +166,12 @@ class Chessboard:
 
 
   def dayBreak(self):
-    for p in self.whitePieces:
-      p.wakeUp()
+    #for p in self.whitePieces: # TODO: pieces should compete for who is to move
+      choice(self.whitePieces).wakeUp()
 
   def nightFall(self):
-    for p in self.blackPieces:
-      p.wakeUp()
+    #for p in self.blackPieces: # TODO: pieces should compete for who is to move
+      choice(self.blackPieces).wakeUp()
 
   def print(self):
     print()
