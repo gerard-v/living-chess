@@ -105,12 +105,12 @@ class Chessboard:
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
   def __init__(self, fen='3qk3/8/8/8/8/8/8/3QK3 w - - 0 1'):
     
-    self.squares = [[Square("abcdefgh"[i]+"12345678"[j], self) for j in range(8)] for i in range(8)]
+    self.squares = [[Square("abcdefgh"[j]+"12345678"[i], self) for j in range(8)] for i in range(8)]
     for i in range(8):
       for j in range(8):
         for d in self.directions:
-          deltai = d.count("E") - d.count("W")
-          deltaj = d.count("N") - d.count("S")
+          deltai = d.count("N") - d.count("S")
+          deltaj = d.count("E") - d.count("W")
           if 0<=i+deltai<8 and 0<=j+deltaj<8:
             self.squares[i][j].neighbours[d] = self.squares[i+deltai][j+deltaj]
     
@@ -123,46 +123,45 @@ class Chessboard:
     self.color = fields[1]
     # Setup position
     lines = fields[0].split('/')
-    for j in range(8):
-      x = 0
-      for i in lines[7-j]:
-        if i in digits:
-          x += int(i)
+    for i in range(8):
+      j = 0
+      for c in lines[7-i]:
+        if c in digits:
+          j += int(c)
         else:
           
-          #self.board[j][x] = i
-          if i=='K':
-            self.squares[x][j].setPiece(King('white', self.squares[x][j])) # bind the King to the square
+          if c=='K':
+            self.squares[i][j].setPiece(King('white', self.squares[i][j])) # bind the King to the square
             
-          if i=='k':
-            self.squares[x][j].setPiece(King('black', self.squares[x][j])) # bind the King to the square
+          if c=='k':
+            self.squares[i][j].setPiece(King('black', self.squares[i][j])) # bind the King to the square
             
-          if i=='Q':
-            self.squares[x][j].setPiece(Queen('white', self.squares[x][j])) # bind the Queen to the square
+          if c=='Q':
+            self.squares[i][j].setPiece(Queen('white', self.squares[i][j])) # bind the Queen to the square
 
-          if i=='q':
-            self.squares[x][j].setPiece(Queen('black', self.squares[x][j])) # bind the Queen to the square
+          if c=='q':
+            self.squares[i][j].setPiece(Queen('black', self.squares[i][j])) # bind the Queen to the square
 
-          x += 1
+          j += 1
 
     # Assign the white and black pieces to their respective armies
-    for j in range(2): # idee: getPiece().getColor() gebruiken, zodat we slechts één for-loop nodig hebben voor alle stukken
-      x = 0
-      for i in lines[7-j]:
-        if i in digits:
-          x += int(i)
+    for i in range(2): # idee: getPiece().getColor() gebruiken, zodat we slechts één for-loop nodig hebben voor alle stukken
+      j = 0
+      for c in lines[7-i]:
+        if c in digits:
+          j += int(c)
         else:
-          self.whitePieces.append(self.squares[x][j].getPiece())
-          x += 1
+          self.whitePieces.append(self.squares[i][j].getPiece())
+          j += 1
 
-    for j in range(0,2):
-      x = 0
-      for i in lines[7-j]:
-        if i in digits:
-          x += int(i)
+    for i in range(0,2):
+      j = 0
+      for c in lines[7-i]:
+        if c in digits:
+          j += int(c)
         else:
-          self.blackPieces.append(self.squares[x][7-j].getPiece())
-          x += 1
+          self.blackPieces.append(self.squares[7-i][j].getPiece())
+          j += 1
 
 
   def dayBreak(self):
@@ -175,9 +174,9 @@ class Chessboard:
 
   def print(self):
     print()
-    for rank in range(7,-1,-1): # from 7 to 0, to print top rank first
-      for file in self.squares:
-        print(file[rank], end=' ')
+    for rank in range(8):
+      for square in self.squares[7-rank]: # from 7 to 0, to print top rank first
+        print(square, end=' ')
       print()
     print()
 
