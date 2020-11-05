@@ -103,7 +103,7 @@ class Chessboard:
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='3qk3/8/8/8/8/8/8/3QK3 w - - 0 1'):
+  def __init__(self, fen='3qk3/8/8/8/8/8/8/3Q3K w - - 0 1'):
     
     self.squares = [[Square("abcdefgh"[j]+"12345678"[i], self) for j in range(8)] for i in range(8)]
     for i in range(8):
@@ -129,38 +129,20 @@ class Chessboard:
         if c in digits:
           j += int(c)
         else:
+          assert c.lower() in self.pieces, "Unknown piece: '" + c + "'"
           
-          if c=='K':
-            self.squares[i][j].setPiece(King('white', self.squares[i][j])) # bind the King to the square
+          if c.isupper():
+            color = 'white'
+          else:
+            color = 'black'
             
-          if c=='k':
-            self.squares[i][j].setPiece(King('black', self.squares[i][j])) # bind the King to the square
-            
-          if c=='Q':
-            self.squares[i][j].setPiece(Queen('white', self.squares[i][j])) # bind the Queen to the square
-
-          if c=='q':
-            self.squares[i][j].setPiece(Queen('black', self.squares[i][j])) # bind the Queen to the square
-
-          j += 1
-
-    # Assign the white and black pieces to their respective armies
-    for i in range(2): # idee: getPiece().getColor() gebruiken, zodat we slechts één for-loop nodig hebben voor alle stukken
-      j = 0
-      for c in lines[7-i]:
-        if c in digits:
-          j += int(c)
-        else:
-          self.whitePieces.append(self.squares[i][j].getPiece())
-          j += 1
-
-    for i in range(0,2):
-      j = 0
-      for c in lines[7-i]:
-        if c in digits:
-          j += int(c)
-        else:
-          self.blackPieces.append(self.squares[7-i][j].getPiece())
+          self.squares[i][j].setPiece(self.pieces[c.lower()](color, self.squares[i][j]))
+          
+          if color == 'white':
+            self.whitePieces.append(self.squares[i][j].getPiece())
+          else:
+            self.blackPieces.append(self.squares[i][j].getPiece())
+          
           j += 1
 
 
@@ -185,10 +167,6 @@ class Chessboard:
     if (piece.x > 1):
       squares.append((piece.x-1, piece.y))
     return squares
-
-  def move(self, origin, destination):
-    self.board[destination[0]][destination[1]] = self.board[origin[0]][origin[1]]
-    self.board[origin[0]][origin[1]] = '.'
 
 if len(sys.argv)>1:
   board = Chessboard(sys.argv[1]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
