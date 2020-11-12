@@ -34,6 +34,38 @@ class Square:
       print('piece captured, color: ' + oldPiece.color)
     self.piece = piece
 
+  def exploreRange(self, piece):
+    if isinstance(piece, King):
+      options = []
+      for d in self.neighbours:
+        if len(d) < 3:
+          options.append(self.neighbours[d])
+      return options
+    if isinstance(piece, Queen):
+      options = []
+      for d in self.neighbours:
+        if len(d) < 3:
+          options.append(self.neighbours[d])
+      return options
+    if isinstance(piece, Knight):
+      options = []
+      for d in self.neighbours:
+        if len(d) == 3:
+          options.append(self.neighbours[d])
+      return options
+    if isinstance(piece, Bishop):
+      options = []
+      for d in self.neighbours:
+        if len(d) == 2:
+          options.append(self.neighbours[d])
+      return options
+    if isinstance(piece, Rook):
+      options = []
+      for d in self.neighbours:
+        if len(d) == 1:
+          options.append(self.neighbours[d])
+      return options
+
 class Piece:
   def __init__(self, color, square):
     assert color in ['black', 'white']
@@ -49,7 +81,7 @@ class Piece:
     # Roll-call
     print("The", self.color, type(self).__name__, "wakes up");
     # feel/listen: sense what squares are a no-go
-    options = self.getOptions()
+    options = self.square.exploreRange(self)
     
     r = choice([o for o in options if not o.piece or o.piece.color != self.color])
     print(str(self).upper()+str(self.square.name)+"-"+r.name)
@@ -68,13 +100,6 @@ class King(Piece):
 
   def announcePresence(self):
     pass
-    
-  def getOptions(self):
-    self.options = []
-    for d in self.square.neighbours:
-      if len(d) < 3:
-        self.options.append(self.square.neighbours[d])
-    return self.options
       
 class Queen(Piece):
   def __init__(self, color, square):
@@ -86,24 +111,45 @@ class Queen(Piece):
     else:
       return 'q'
 
-  def getOptions(self):
-    self.options = []
-    for d in self.square.neighbours:
-      if len(d) < 3:
-        self.options.append(self.square.neighbours[d])
-    return self.options
+class Knight(Piece):
+  def __init__(self, color, square):
+    Piece.__init__(self, color, square)
+
+  def __str__(self):
+    if (self.color=='white'):
+      return 'N'
+    else:
+      return 'n'
+
+class Bishop(Piece):
+  def __init__(self, color, square):
+    Piece.__init__(self, color, square)
+
+  def __str__(self):
+    if (self.color=='white'):
+      return 'B'
+    else:
+      return 'b'
+
+class Rook(Piece):
+  def __init__(self, color, square):
+    Piece.__init__(self, color, square)
+
+  def __str__(self):
+    if (self.color=='white'):
+      return 'R'
+    else:
+      return 'r'
+
 
 class Chessboard:
-  pieces = {'k': King, 'q': Queen}
+  pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook}
   # These directions are used to connect the squares
   directions = ["N","NNE","NE","ENE","E","ESE","SE","SSE","S","SSW","SW","WSW","W","WNW","NW","NNW"]
-
-  # Squares
-  #board = [[Square()]*8 for i in range(8)]
   
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='3qk3/8/8/8/8/8/8/3Q3K w - - 0 1'):
+  def __init__(self, fen='rbnqknbr/8/8/8/8/8/8/RBNQKNBR w - - 0 1'):
     
     self.squares = [[Square("abcdefgh"[j]+"12345678"[i], self) for j in range(8)] for i in range(8)]
     for i in range(8):

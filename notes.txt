@@ -15,7 +15,8 @@ TODO:
 - have a physical chessboard on the table always!
 
 - idea: add goToSleep as counterpart to wakeUp, to announce presence a.o.
-- question: should we see the vibrations as coninuously present or as events?... 
+- idea for who gets to move: look at neighbours - getOptions? (dense = move, sparse = wait)
+- question: should we see the vibrations as continuously present or as events?... 
 - king and queen should inherit from piece (e.g. moveTo is generic)
 - refactor determination of neighbours for squares
 - CRC cards
