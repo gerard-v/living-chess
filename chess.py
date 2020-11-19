@@ -31,7 +31,7 @@ class Square:
         self.board.whitePieces.remove(oldPiece)
       if oldPiece.color=='black':
         self.board.blackPieces.remove(oldPiece)
-      print('piece captured, color: ' + oldPiece.color)
+      print(oldPiece.color + ' ' + type(oldPiece).__name__ + ' on ' + self.name + ' captured')
     self.piece = piece
 
   def exploreRange(self, piece):
@@ -83,9 +83,12 @@ class Piece:
     # feel/listen: sense what squares are a no-go
     options = self.square.exploreRange(self)
     
-    r = choice([o for o in options if not o.piece or o.piece.color != self.color])
-    print(str(self).upper()+str(self.square.name)+"-"+r.name)
-    self.moveTo(r)
+    r = [o for o in options if o.piece and o.piece.color != self.color]
+    if not r:
+      r = [o for o in options if not o.piece or o.piece.color != self.color]
+    destination = choice(r)
+    print(str(self).upper()+str(self.square.name)+"-"+destination.name)
+    self.moveTo(destination)
 
 class King(Piece):
   def __init__(self, color, square):
