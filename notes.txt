@@ -1,4 +1,4 @@
-   j
+   i
    
    7  a8 b8  ..... g8 h8
    .  a7              h7
@@ -8,15 +8,15 @@
    .
    .  a2              h2 
    0  a1 b1  ..... g1 h1
-      0               7  = i
+      0               7  = j
 	  
 	  
 TODO:
 - have a physical chessboard on the table always!
 
 - idea: add goToSleep as counterpart to wakeUp, to announce presence a.o.
-- question: should we see the vibrations as coninuously present or as events?... 
+- idea for who gets to move: look at neighbours - getOptions? (dense = move, sparse = wait)
+- question: should we see the vibrations as continuously present or as events?... 
 - king and queen should inherit from piece (e.g. moveTo is generic)
-- add function setPiece, refactor lines 129-139 (putting piece objects on the board)
 - refactor determination of neighbours for squares
 - CRC cards
