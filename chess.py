@@ -79,16 +79,19 @@ class Piece:
     
   def wakeUp(self):
     # Roll-call
-    print("The", self.color, type(self).__name__, "wakes up");
+    #print("The", self.color, type(self).__name__, "wakes up");
     # feel/listen: sense what squares are a no-go
     options = self.square.exploreRange(self)
     
     r = [o for o in options if o.piece and o.piece.color != self.color]
-    if not r:
+    if r:
+      return [2,self,choice(r)]
+    else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]
-    destination = choice(r)
-    print(str(self).upper()+str(self.square.name)+"-"+destination.name)
-    self.moveTo(destination)
+      if r:
+        return [1,self,choice(r)]
+      else:
+        return [0,self,None]
 
 class King(Piece):
   def __init__(self, color, square):
@@ -196,13 +199,17 @@ class Chessboard:
 
 
   def dayBreak(self):
-    #for p in self.whitePieces: # TODO: pieces should compete for who is to move
-      choice(self.whitePieces).wakeUp()
+    biddings = []
+    for p in self.whitePieces:
+      biddings.append(p.wakeUp())
+    return biddings
 
   def nightFall(self):
-    #for p in self.blackPieces: # TODO: pieces should compete for who is to move
-      choice(self.blackPieces).wakeUp()
-
+    biddings = []
+    for p in self.blackPieces:
+      biddings.append(p.wakeUp())
+    return biddings
+  
   def print(self):
     print()
     for rank in range(8):
@@ -238,10 +245,27 @@ while True :
 
   if board.color == 'w':
     print("White to move")
-    board.dayBreak()
+    biddings = board.dayBreak()
+
   else:
     print("Black to move")
-    board.nightFall()
+    biddings = board.nightFall()
+
+  # Honor the best bid
+  print(biddings)
+  best = -1
+  bestIndex = None
+  for i in range(len(biddings)):
+    if biddings[i][0] > best:
+      best = biddings[i][0]
+      bestIndex = i
+  print (biddings[bestIndex])
+  
+  biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+  
+  #print(str(self).upper()+str(self.square.name)+"-"+destination.name)
+  #self.moveTo(destination)
+
 
   board.print()
   # Switch between black and white
