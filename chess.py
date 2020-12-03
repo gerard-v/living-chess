@@ -252,20 +252,22 @@ while True :
     biddings = board.nightFall()
 
   # Honor the best bid
-  print(biddings)
+  #print(biddings)
   best = -1
   bestIndex = None
+  results = []
   for i in range(len(biddings)):
-    if biddings[i][0] > best:
-      best = biddings[i][0]
-      bestIndex = i
-  print (biddings[bestIndex])
-  
-  biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
-  
-  #print(str(self).upper()+str(self.square.name)+"-"+destination.name)
-  #self.moveTo(destination)
+    if biddings[i][0] == best:
+      results.append(i)
 
+    if biddings[i][0] > best:
+      results = [i]
+      best = biddings[i][0]
+
+  # In case of a tie, pick a random bid out of the results
+  bestIndex = choice(results)
+  # Let the chess piece move
+  biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
 
   board.print()
   # Switch between black and white
