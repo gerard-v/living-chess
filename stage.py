@@ -1,5 +1,6 @@
 from players import *
 
+
 class Square:
   def __init__(self, name, board):
     self.piece = None
@@ -63,16 +64,32 @@ class Square:
         if len(d) == 1:
           options.append(self.neighbours[d])
       return options
-
+    if isinstance(piece, Pawn):
+      options = []
+      if piece.color == 'white':
+        if "N" in self.neighbours and not self.neighbours["N"].piece:
+          options.append(self.neighbours["N"])
+        elif "NE" in self.neighbours and self.neighbours["NE"].piece:
+          options.append(self.neighbours["NE"])
+        elif "NW" in self.neighbours and self.neighbours["NW"].piece:
+          options.append(self.neighbours["NW"])
+      else: # black
+        if "S" in self.neighbours and not self.neighbours["S"].piece:
+          options.append(self.neighbours["S"])
+        elif "SE" in self.neighbours and self.neighbours["SE"].piece:
+          options.append(self.neighbours["SE"])
+        elif "SW" in self.neighbours and self.neighbours["SW"].piece:
+          options.append(self.neighbours["SW"])
+      return options
 
 class Chessboard:
-  pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook}
+  pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
   # These directions are used to connect the squares
   directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='rbnqknbr/8/8/8/8/8/8/RBNQKNBR w - - 0 1'):
+  def __init__(self, fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1'):
 
     self.squares = [[Square("abcdefgh"[j] + "12345678"[i], self) for j in range(8)] for i in range(8)]
     for i in range(8):

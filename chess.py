@@ -45,7 +45,10 @@ while True :
   # In case of a tie, pick a random bid out of the results
   bestIndex = choice(results)
   # Let the chess piece move
-  biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+  try:
+    biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+  except AttributeError:
+    print("Stalemate")
 
   board.print()
   # Switch between black and white
