@@ -24,13 +24,13 @@ class Square:
     pass
 
   def setPiece(self, piece):
-    oldPiece = self.getPiece()
-    if oldPiece:
-      if oldPiece.color == 'white':
-        self.board.whitePieces.remove(oldPiece)
-      if oldPiece.color == 'black':
-        self.board.blackPieces.remove(oldPiece)
-      print(oldPiece.color + ' ' + type(oldPiece).__name__ + ' on ' + self.name + ' captured')
+    oldpiece = self.getPiece()
+    if oldpiece:
+      if oldpiece.color == 'white':
+        self.board.whitePieces.remove(oldpiece)
+      if oldpiece.color == 'black':
+        self.board.blackPieces.remove(oldpiece)
+      print(oldpiece.color + ' ' + type(oldpiece).__name__ + ' on ' + self.name + ' captured')
     self.piece = piece
 
   def exploreRange(self, piece):
@@ -69,18 +69,20 @@ class Square:
       if piece.color == 'white':
         if "N" in self.neighbours and not self.neighbours["N"].piece:
           options.append(self.neighbours["N"])
-        elif "NE" in self.neighbours and self.neighbours["NE"].piece:
+        if "NE" in self.neighbours and self.neighbours["NE"].piece and self.neighbours["NE"].piece.color == 'black':
           options.append(self.neighbours["NE"])
-        elif "NW" in self.neighbours and self.neighbours["NW"].piece:
+        if "NW" in self.neighbours and self.neighbours["NW"].piece and self.neighbours["NW"].piece.color == 'black':
           options.append(self.neighbours["NW"])
-      else: # black
+      else:
+        # black
         if "S" in self.neighbours and not self.neighbours["S"].piece:
           options.append(self.neighbours["S"])
-        elif "SE" in self.neighbours and self.neighbours["SE"].piece:
+        if "SE" in self.neighbours and self.neighbours["SE"].piece and self.neighbours["SE"].piece.color == 'white':
           options.append(self.neighbours["SE"])
-        elif "SW" in self.neighbours and self.neighbours["SW"].piece:
+        if "SW" in self.neighbours and self.neighbours["SW"].piece and self.neighbours["SW"].piece.color == 'white':
           options.append(self.neighbours["SW"])
       return options
+
 
 class Chessboard:
   pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
@@ -151,8 +153,9 @@ class Chessboard:
       print()
     print()
 
-  def getAccessibleSquares(self, piece):
+  @staticmethod
+  def getAccessibleSquares(piece):
     squares = []
-    if (piece.x > 1):
+    if piece.x > 1:
       squares.append((piece.x - 1, piece.y))
     return squares
