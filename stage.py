@@ -10,9 +10,12 @@ class Square:
 
   def __str__(self):
     if self.piece:
-      return str(self.piece)
+      if self.piece.selfishness == 2:
+        return str(self.piece)+"*"
+      else:
+        return str(self.piece)+" "
     else:
-      return '.'
+      return '. '
 
   def getPiece(self):
     return self.piece
