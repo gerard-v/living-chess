@@ -91,7 +91,7 @@ class Chessboard:
 
   # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-  def __init__(self, fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1'):
+  def __init__(self, fen='8/2nnnn2/2nnnn2/8/8/2NNNN2/2NNNN2/8 w - - 0 1'):
 
     self.squares = [[Square("abcdefgh"[j] + "12345678"[i], self) for j in range(8)] for i in range(8)]
     for i in range(8):
