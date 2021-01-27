@@ -35,52 +35,29 @@ class Square:
 
   def exploreRange(self, piece):
     if isinstance(piece, King):
-      options = []
-      for d in self.neighbours:
-        if len(d) < 3:
-          options.append(self.neighbours[d])
-      return options
+      return [self.neighbours[d] for d in self.neighbours if len(d)<3]
     if isinstance(piece, Queen):
-      options = []
-      for d in self.neighbours:
-        if len(d) < 3:
-          options.append(self.neighbours[d])
-      return options
+      return [self.neighbours[d] for d in self.neighbours if len(d)<3]
     if isinstance(piece, Knight):
-      options = []
-      for d in self.neighbours:
-        if len(d) == 3:
-          options.append(self.neighbours[d])
-      return options
+      return [self.neighbours[d] for d in self.neighbours if len(d)==3]
     if isinstance(piece, Bishop):
-      options = []
-      for d in self.neighbours:
-        if len(d) == 2:
-          options.append(self.neighbours[d])
-      return options
+      return [self.neighbours[d] for d in self.neighbours if len(d)==2]
     if isinstance(piece, Rook):
-      options = []
-      for d in self.neighbours:
-        if len(d) == 1:
-          options.append(self.neighbours[d])
-      return options
+      return [self.neighbours[d] for d in self.neighbours if len(d)==1]
     if isinstance(piece, Pawn):
-      options = []
       if piece.color == 'white':
-        if "N" in self.neighbours and not self.neighbours["N"].piece:
-          options.append(self.neighbours["N"])
-        if "NE" in self.neighbours and self.neighbours["NE"].piece and self.neighbours["NE"].piece.color == 'black':
-          options.append(self.neighbours["NE"])
-        if "NW" in self.neighbours and self.neighbours["NW"].piece and self.neighbours["NW"].piece.color == 'black':
-          options.append(self.neighbours["NW"])
+        forward = 'N'
+        opponent = 'black'
       else:
-        # black
-        if "S" in self.neighbours and not self.neighbours["S"].piece:
-          options.append(self.neighbours["S"])
-        if "SE" in self.neighbours and self.neighbours["SE"].piece and self.neighbours["SE"].piece.color == 'white':
-          options.append(self.neighbours["SE"])
-        if "SW" in self.neighbours and self.neighbours["SW"].piece and self.neighbours["SW"].piece.color == 'white':
-          options.append(self.neighbours["SW"])
+        forward = 'S'
+        opponent = 'white'
+      options = []
+      if forward in self.neighbours and not self.neighbours[forward].piece:
+        options.append(self.neighbours[forward])
+      if forward+"E" in self.neighbours and self.neighbours[forward+"E"].piece and self.neighbours[forward+"E"].piece.color == opponent:
+        options.append(self.neighbours[forward+"E"])
+      if forward+"W" in self.neighbours and self.neighbours[forward+"W"].piece and self.neighbours[forward+"W"].piece.color == opponent:
+        options.append(self.neighbours[forward+"W"])
       return options
 
 
