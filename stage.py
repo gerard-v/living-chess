@@ -48,12 +48,18 @@ class Square:
       if piece.color == 'white':
         forward = 'N'
         opponent = 'black'
+        startingRow = '2'
       else:
         forward = 'S'
         opponent = 'white'
+        startingRow = '7'
       options = []
       if forward in self.neighbours and not self.neighbours[forward].piece:
         options.append(self.neighbours[forward])
+      if (piece.square.name[1] == startingRow
+          and not self.neighbours[forward].piece
+          and not self.neighbours[forward].neighbours[forward].piece):
+        options.append(self.neighbours[forward].neighbours[forward])
       if forward+"E" in self.neighbours and self.neighbours[forward+"E"].piece and self.neighbours[forward+"E"].piece.color == opponent:
         options.append(self.neighbours[forward+"E"])
       if forward+"W" in self.neighbours and self.neighbours[forward+"W"].piece and self.neighbours[forward+"W"].piece.color == opponent:
