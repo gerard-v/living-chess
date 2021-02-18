@@ -18,6 +18,8 @@ class Piece:
     # print("The", self.color, type(self).__name__, "wakes up");
     # feel/listen: sense what squares are a no-go
     options = self.square.exploreRange(self)
+    if isinstance(self, Rook):
+      print(options)
 
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:

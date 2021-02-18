@@ -20,9 +20,6 @@ class Square:
   def clear(self):
     self.piece = None
 
-  def whoControls(self):
-    pass
-
   def setPiece(self, piece):
     oldpiece = self.getPiece()
     if oldpiece:
@@ -32,6 +29,14 @@ class Square:
         self.board.blackPieces.remove(oldpiece)
       print(oldpiece.color + ' ' + type(oldpiece).__name__ + ' on ' + self.name + ' captured')
     self.piece = piece
+
+  def expandRange(self, direction):
+    if self.piece:
+      return [self]
+    lyst = [self]
+    if (self.neighbours[direction]):
+      lyst.extend(self.neighbours[direction].expandRange(direction))
+    return lyst
 
   def exploreRange(self, piece):
     if isinstance(piece, King):
@@ -43,7 +48,10 @@ class Square:
     if isinstance(piece, Bishop):
       return [self.neighbours[d] for d in self.neighbours if len(d)==2]
     if isinstance(piece, Rook):
-      return [self.neighbours[d] for d in self.neighbours if len(d)==1]
+      lyst = []
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d)==1])
+      print(lyst)
+      return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Pawn):
       if piece.color == 'white':
         forward = 'N'
