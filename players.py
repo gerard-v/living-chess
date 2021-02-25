@@ -9,6 +9,7 @@ class Piece:
     self.square = square
 
   def moveTo(self, square):
+    #print(self.name + self.square + "-" + square)
     self.square.clear()
     self.square = square
     self.square.setPiece(self)
