@@ -24,7 +24,6 @@ while True :
   if board.color == 'w':
     print("White to move")
     biddings = board.dayBreak()
-
   else:
     print("Black to move")
     biddings = board.nightFall()
@@ -49,6 +48,7 @@ while True :
     biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
   except AttributeError:
     print("Stalemate")
+    exit()
 
   board.print()
   # Switch between black and white

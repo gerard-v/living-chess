@@ -34,7 +34,7 @@ class Square:
     if self.piece:
       return [self]
     lyst = [self]
-    if (self.neighbours[direction]):
+    if direction in self.neighbours:
       lyst.extend(self.neighbours[direction].expandRange(direction))
     return lyst
 
