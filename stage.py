@@ -42,15 +42,18 @@ class Square:
     if isinstance(piece, King):
       return [self.neighbours[d] for d in self.neighbours if len(d)<3]
     if isinstance(piece, Queen):
-      return [self.neighbours[d] for d in self.neighbours if len(d)<3]
+      lyst = []
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) < 3])
+      return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Knight):
-      return [self.neighbours[d] for d in self.neighbours if len(d)==3]
+      return [self.neighbours[d] for d in self.neighbours if len(d) == 3]
     if isinstance(piece, Bishop):
-      return [self.neighbours[d] for d in self.neighbours if len(d)==2]
+      lyst = []
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 2])
+      return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Rook):
       lyst = []
       lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d)==1])
-      print(lyst)
       return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Pawn):
       if piece.color == 'white':
