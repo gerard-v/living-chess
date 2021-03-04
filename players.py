@@ -9,7 +9,10 @@ class Piece:
     self.square = square
 
   def moveTo(self, square):
-    #print(self.name + self.square + "-" + square)
+    #if isinstance(self.piece, Pawn):
+    #  print(self.square.name, "-", square.name)
+    #else:
+    print(self, self.square.name, "-", square.name)
     self.square.clear()
     self.square = square
     self.square.setPiece(self)
