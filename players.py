@@ -22,12 +22,12 @@ class Piece:
     # print("The", self.color, type(self).__name__, "wakes up");
     # feel/listen: sense what squares are a no-go
     options = self.square.exploreRange(self)
-    if isinstance(self, Rook):
-      print(options)
 
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:
-      return [2, self, choice(r)]
+      print(r)
+      c = max(r, key=lambda s: s.piece.value)
+      return [1 + c.piece.value, self, c]
     else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]
       if r:
@@ -40,6 +40,7 @@ class King(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.options = []
+    self.value = 100
 
   def __str__(self):
     if self.color == 'white':
@@ -54,6 +55,7 @@ class King(Piece):
 class Queen(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.value = 9
 
   def __str__(self):
     if self.color == 'white':
@@ -65,6 +67,7 @@ class Queen(Piece):
 class Knight(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.value = 3
 
   def __str__(self):
     if self.color == 'white':
@@ -76,6 +79,7 @@ class Knight(Piece):
 class Bishop(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.value = 3
 
   def __str__(self):
     if self.color == 'white':
@@ -86,6 +90,7 @@ class Bishop(Piece):
 class Rook(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.value = 5
 
   def __str__(self):
     if self.color == 'white':
@@ -96,6 +101,7 @@ class Rook(Piece):
 class Pawn(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
+    self.value = 1
 
   def __str__(self):
     if self.color == 'white':
