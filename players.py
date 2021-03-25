@@ -25,9 +25,10 @@ class Piece:
 
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:
-      print(r)
+      #print("value of self: " + str(self.value) + " (" + type(self).__name__ + ")")
       c = max(r, key=lambda s: s.piece.value)
-      return [1 + c.piece.value, self, c]
+      print("bid by " + type(self).__name__ + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
+      return [1 + c.piece.value / self.value, self, c]
     else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]
       if r:
