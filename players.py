@@ -8,6 +8,9 @@ class Piece:
     self.color = color
     self.square = square
 
+  def getName(self):
+    return type(self).__name__ + " (" + str(self.value) + ")"
+
   def moveTo(self, square):
     #if isinstance(self.piece, Pawn):
     #  print(self.square.name, "-", square.name)
@@ -27,7 +30,7 @@ class Piece:
     if r:
       #print("value of self: " + str(self.value) + " (" + type(self).__name__ + ")")
       c = max(r, key=lambda s: s.piece.value)
-      print("bid by " + type(self).__name__ + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
+      print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
       return [1 + c.piece.value / self.value, self, c]
     else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]

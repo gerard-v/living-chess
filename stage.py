@@ -27,7 +27,7 @@ class Square:
         self.board.whitePieces.remove(oldpiece)
       if oldpiece.color == 'black':
         self.board.blackPieces.remove(oldpiece)
-      print(oldpiece.color + ' ' + type(oldpiece).__name__ + ' on ' + self.name + ' captured')
+      print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
     self.piece = piece
 
   def expandRange(self, direction):
