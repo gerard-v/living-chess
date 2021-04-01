@@ -8,7 +8,10 @@ else:
   board = Chessboard()
 board.print()
 
-while True :
+whiteScore = 0
+blackScore = 0
+
+while True:
 
   if not board.blackPieces:
     print("White wins!")
@@ -46,6 +49,14 @@ while True :
   # Let the chess piece move
   try:
     biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+
+    if board.color == 'w':
+      whiteScore += best
+    else:
+      blackScore += best
+      print("White score: " + str(whiteScore))
+      print("Black score: " + str(blackScore))
+
   except AttributeError:
     print("Stalemate")
     exit()
