@@ -1,4 +1,5 @@
 from players import *
+from string import digits
 
 
 class Square:
@@ -83,7 +84,7 @@ class Chessboard:
   # These directions are used to connect the squares
   directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 
-  # only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
+  # Only the white king: '8/8/8/8/8/8/8/4K3 w - - 0 1' (with quotes)
   # Standard chess setup: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
   def __init__(self, fen='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1'):
 

@@ -32,7 +32,6 @@ while True:
     biddings = board.nightFall()
 
   # Honor the best bid
-  #print(biddings)
   best = -1
   bestIndex = None
   results = []

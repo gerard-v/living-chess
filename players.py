@@ -1,4 +1,3 @@
-from string import digits
 from random import choice
 
 
@@ -12,23 +11,16 @@ class Piece:
     return type(self).__name__ + " (" + str(self.value) + ")"
 
   def moveTo(self, square):
-    #if isinstance(self.piece, Pawn):
-    #  print(self.square.name, "-", square.name)
-    #else:
     print(self, self.square.name, "-", square.name)
     self.square.clear()
     self.square = square
     self.square.setPiece(self)
 
   def wakeUp(self):
-    # Roll-call
-    # print("The", self.color, type(self).__name__, "wakes up");
-    # feel/listen: sense what squares are a no-go
     options = self.square.exploreRange(self)
 
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:
-      #print("value of self: " + str(self.value) + " (" + type(self).__name__ + ")")
       c = max(r, key=lambda s: s.piece.value)
       print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
       return [1 + c.piece.value / self.value, self, c]
@@ -51,9 +43,6 @@ class King(Piece):
       return 'K'
     else:
       return 'k'
-
-  def announcePresence(self):
-    pass
 
 
 class Queen(Piece):
