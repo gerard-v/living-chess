@@ -35,7 +35,6 @@ class Piece:
 class King(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
-    self.options = []
     self.value = 100
 
   def __str__(self):
