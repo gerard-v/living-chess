@@ -1,10 +1,18 @@
 from players import *
 from string import digits
 
+class colors:
+  BLUE = '\033[94m'
+  CYAN = '\033[96m'
+  GREEN = '\033[92m'
+  YELLOW = '\033[93m'
+  RED = '\033[91m'
+  ENDC = '\033[0m'
 
 class Square:
   def __init__(self, name, board):
     self.piece = None
+    self.active = False
     self.name = name
     self.neighbours = {}
     self.board = board
@@ -30,6 +38,7 @@ class Square:
         self.board.blackPieces.remove(oldpiece)
       print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
     self.piece = piece
+    self.active = True
 
   def expandRange(self, direction):
     if self.piece:
@@ -120,6 +129,7 @@ class Chessboard:
             color = 'black'
 
           self.squares[i][j].setPiece(self.pieces[c.lower()](color, self.squares[i][j]))
+          self.squares[i][j].active = False
 
           if color == 'white':
             self.whitePieces.append(self.squares[i][j].getPiece())
@@ -144,7 +154,11 @@ class Chessboard:
     print()
     for rank in range(8):
       for square in self.squares[7 - rank]:  # from 7 to 0, to print top rank first
-        print(square, end=' ')
+        if square.active:
+          print(colors.YELLOW + str(square) + colors.ENDC, end=' ')
+          square.active = False
+        else:
+          print(square, end=' ')
       print()
     print()
 
