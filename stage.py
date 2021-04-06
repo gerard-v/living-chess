@@ -148,9 +148,3 @@ class Chessboard:
       print()
     print()
 
-  @staticmethod
-  def getAccessibleSquares(piece):
-    squares = []
-    if piece.x > 1:
-      squares.append((piece.x - 1, piece.y))
-    return squares
