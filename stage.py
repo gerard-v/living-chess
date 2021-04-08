@@ -155,7 +155,7 @@ class Chessboard:
     for rank in range(8):
       for square in self.squares[7 - rank]:  # from 7 to 0, to print top rank first
         if square.active:
-          print(colors.YELLOW + str(square) + colors.ENDC, end=' ')
+          print(colors.RED + str(square) + colors.ENDC, end=' ')
           square.active = False
         else:
           print(square, end=' ')
