@@ -16,6 +16,11 @@ class Piece:
     self.square = square
     self.square.setPiece(self)
 
+  def vibrate(self):
+    reachableSquares = self.square.exploreRange(self)
+    for r in reachableSquares:
+      r.storeVibration(self)
+
   def wakeUp(self):
     options = self.square.exploreRange(self)
 

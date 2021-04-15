@@ -60,6 +60,8 @@ while True:
     print("Stalemate")
     exit()
 
+  # Emit vibrations by both armies
+  board.emitVibrations()
   board.print()
   # Switch between black and white
   if board.color == 'b':

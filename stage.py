@@ -40,6 +40,9 @@ class Square:
     self.piece = piece
     self.active = True
 
+  def storeVibration(self, piece):
+    pass
+
   def expandRange(self, direction):
     if self.piece:
       return [self]
@@ -149,6 +152,12 @@ class Chessboard:
     for p in self.blackPieces:
       biddings.append(p.wakeUp())
     return biddings
+
+  def emitVibrations(self):
+    for p in self.whitePieces:
+      p.vibrate()
+    for p in self.blackPieces:
+      p.vibrate()
 
   def print(self):
     print()
