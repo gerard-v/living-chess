@@ -7,6 +7,7 @@ if len(sys.argv)>1:
 else:
   board = Chessboard()
 board.print()
+board.emitVibrations()
 
 whiteScore = 0
 blackScore = 0
@@ -61,6 +62,7 @@ while True:
     exit()
 
   # Emit vibrations by both armies
+  board.clearVibrations()
   board.emitVibrations()
   board.print()
   # Switch between black and white

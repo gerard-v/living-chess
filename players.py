@@ -11,6 +11,8 @@ class Piece:
     return type(self).__name__ + " (" + str(self.value) + ")"
 
   def moveTo(self, square):
+    print("White control score: ", self.square.whiteVibrations)
+    print("Black control score: ", self.square.blackVibrations)
     print(self, self.square.name, "-", square.name)
     self.square.clear()
     self.square = square
@@ -23,6 +25,8 @@ class Piece:
 
   def wakeUp(self):
     options = self.square.exploreRange(self)
+
+    # TODO: Sense vibrations on the current square (are you in danger?)
 
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:

@@ -16,6 +16,8 @@ class Square:
     self.name = name
     self.neighbours = {}
     self.board = board
+    self.blackVibrations = 0
+    self.whiteVibrations = 0
 
   def __str__(self):
     if self.piece:
@@ -41,7 +43,14 @@ class Square:
     self.active = True
 
   def storeVibration(self, piece):
-    pass
+    if piece.color == 'white':
+      self.whiteVibrations += 1
+    else:
+      self.blackVibrations += 1
+
+  def clearVibrations(self):
+    self.whiteVibrations = 0
+    self.blackVibrations = 0
 
   def expandRange(self, direction):
     if self.piece:
@@ -154,10 +163,13 @@ class Chessboard:
     return biddings
 
   def emitVibrations(self):
-    for p in self.whitePieces:
+    for p in self.whitePieces + self.blackPieces:
       p.vibrate()
-    for p in self.blackPieces:
-      p.vibrate()
+
+  def clearVibrations(self):
+    for row in self.squares:
+      for square in row:
+        square.clearVibrations()
 
   def print(self):
     print()
