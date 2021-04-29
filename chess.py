@@ -48,14 +48,16 @@ while True:
   bestIndex = choice(results)
   # Let the chess piece move
   try:
-    biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+    captureScore = biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+    print(captureScore)
 
     if board.color == 'w':
-      whiteScore += best
+      whiteScore += captureScore
     else:
-      blackScore += best
-      print("White score: " + str(whiteScore))
-      print("Black score: " + str(blackScore))
+      blackScore += captureScore
+
+    print("White score: " + str(whiteScore))
+    print("Black score: " + str(blackScore))
 
   except AttributeError:
     print("Stalemate")

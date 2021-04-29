@@ -1,6 +1,5 @@
 from random import choice
 
-
 class Piece:
   def __init__(self, color, square):
     assert color in ['black', 'white']
@@ -11,12 +10,17 @@ class Piece:
     return type(self).__name__ + " (" + str(self.value) + ")"
 
   def moveTo(self, square):
-    print("White control score: ", self.square.whiteVibrations)
-    print("Black control score: ", self.square.blackVibrations)
+    # print("White control score: ", self.square.whiteVibrations)
+    # print("Black control score: ", self.square.blackVibrations)
     print(self, self.square.name, "-", square.name)
     self.square.clear()
     self.square = square
+    if self.square.getPiece():
+      score = self.square.getPiece().value
+    else:
+      score = 0
     self.square.setPiece(self)
+    return score
 
   def vibrate(self):
     reachableSquares = self.square.exploreRange(self)
@@ -31,6 +35,8 @@ class Piece:
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:
       c = max(r, key=lambda s: s.piece.value)
+      # Idea: modify bid if more enemy vibrations than friendly vibrations
+
       print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
       return [1 + c.piece.value / self.value, self, c]
     else:
