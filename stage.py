@@ -1,6 +1,7 @@
 from players import *
 from string import digits
 
+
 class colors:
   BLUE = '\033[94m'
   CYAN = '\033[96m'
@@ -8,6 +9,7 @@ class colors:
   YELLOW = '\033[93m'
   RED = '\033[91m'
   ENDC = '\033[0m'
+
 
 class Square:
   def __init__(self, name, board):
@@ -39,6 +41,9 @@ class Square:
       if oldpiece.color == 'black':
         self.board.blackPieces.remove(oldpiece)
       print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
+      if isinstance(oldpiece, King):
+        print(piece.color, "wins!")
+        exit()
     self.piece = piece
     self.active = True
 
@@ -61,22 +66,11 @@ class Square:
     return lyst
 
   def exploreRange(self, piece):
+    # Short range pieces
     if isinstance(piece, King):
-      return [self.neighbours[d] for d in self.neighbours if len(d)<3]
-    if isinstance(piece, Queen):
-      lyst = []
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) < 3])
-      return [item for sublist in lyst for item in sublist]
+      return [self.neighbours[d] for d in self.neighbours if len(d) < 3]
     if isinstance(piece, Knight):
       return [self.neighbours[d] for d in self.neighbours if len(d) == 3]
-    if isinstance(piece, Bishop):
-      lyst = []
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 2])
-      return [item for sublist in lyst for item in sublist]
-    if isinstance(piece, Rook):
-      lyst = []
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d)==1])
-      return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Pawn):
       if piece.color == 'white':
         forward = 'N'
@@ -93,12 +87,24 @@ class Square:
           and not self.neighbours[forward].piece
           and not self.neighbours[forward].neighbours[forward].piece):
         options.append(self.neighbours[forward].neighbours[forward])
-      if forward+"E" in self.neighbours and self.neighbours[forward+"E"].piece and self.neighbours[forward+"E"].piece.color == opponent:
-        options.append(self.neighbours[forward+"E"])
-      if forward+"W" in self.neighbours and self.neighbours[forward+"W"].piece and self.neighbours[forward+"W"].piece.color == opponent:
-        options.append(self.neighbours[forward+"W"])
+      if forward + "E" in self.neighbours and self.neighbours[forward + "E"].piece and self.neighbours[
+        forward + "E"].piece.color == opponent:
+        options.append(self.neighbours[forward + "E"])
+      if forward + "W" in self.neighbours and self.neighbours[forward + "W"].piece and self.neighbours[
+        forward + "W"].piece.color == opponent:
+        options.append(self.neighbours[forward + "W"])
       return options
-
+    # Long range pieces
+    lyst = []
+    if isinstance(piece, Queen):
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) < 3])
+      return [item for sublist in lyst for item in sublist]
+    if isinstance(piece, Bishop):
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 2])
+      return [item for sublist in lyst for item in sublist]
+    if isinstance(piece, Rook):
+      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 1])
+      return [item for sublist in lyst for item in sublist]
 
 class Chessboard:
   pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
@@ -182,4 +188,3 @@ class Chessboard:
           print(square, end=' ')
       print()
     print()
-
