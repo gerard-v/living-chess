@@ -1,4 +1,35 @@
 from random import choice
+from string import digits
+
+class Army:
+  def __init__(self, color, board, fen):
+    assert color in ['black', 'white']
+    self.color = color
+    self.pieces = []
+
+    fields = fen.split(' ')
+    lines = fields[0].split('/')
+
+    for i in range(8):
+      j = 0
+      for c in lines[7 - i]:
+        if c in digits:
+          j += int(c)
+        else:
+          assert c.lower() in pieces, "Unknown piece: '" + c + "'"
+
+        if c.isupper():
+          fenColor = 'white'
+        else:
+          fenColor = 'black'
+
+        self.squares[i][j].setPiece(pieces[c.lower()](color, self.squares[i][j]))
+        self.squares[i][j].active = False
+
+        piece = pieces[c.lower()]
+        # TODO: if fenColor = self.color ?
+        pieces.append(piece)
+
 
 class Piece:
   def __init__(self, color, square):
@@ -94,6 +125,7 @@ class Bishop(Piece):
     else:
       return 'b'
 
+
 class Rook(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
@@ -105,6 +137,7 @@ class Rook(Piece):
     else:
       return 'r'
 
+
 class Pawn(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
@@ -115,3 +148,6 @@ class Pawn(Piece):
       return 'P'
     else:
       return 'p'
+
+pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
+

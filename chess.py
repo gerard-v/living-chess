@@ -6,6 +6,8 @@ if len(sys.argv)>1:
   board = Chessboard(sys.argv[1]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
 else:
   board = Chessboard()
+whiteArmy = Army('white', board, sys.argv[1])
+blackArmy = Army('black', board, sys.argv[1])
 board.print()
 board.emitVibrations()
 
