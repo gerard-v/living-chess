@@ -107,6 +107,7 @@ class Square:
       return [item for sublist in lyst for item in sublist]
 
 class Chessboard:
+  pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
   # These directions are used to connect the squares
   directions = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"]
 
@@ -123,6 +124,8 @@ class Chessboard:
           if 0 <= i + deltai < 8 and 0 <= j + deltaj < 8:
             self.squares[i][j].neighbours[d] = self.squares[i + deltai][j + deltaj]
 
+    self.whitePieces = []
+    self.blackPieces = []
 
     # Split FEN record into fields
     fields = fen.split(' ')
@@ -136,14 +139,14 @@ class Chessboard:
         if c in digits:
           j += int(c)
         else:
-          assert c.lower() in pieces, "Unknown piece: '" + c + "'"
+          assert c.lower() in self.pieces, "Unknown piece: '" + c + "'"
 
           if c.isupper():
             color = 'white'
           else:
             color = 'black'
 
-          self.squares[i][j].setPiece(pieces[c.lower()](color, self.squares[i][j]))
+          self.squares[i][j].setPiece(self.pieces[c.lower()](color, self.squares[i][j]))
           self.squares[i][j].active = False
 
           if color == 'white':
