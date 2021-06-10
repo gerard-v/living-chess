@@ -14,14 +14,6 @@ blackScore = 0
 
 while True:
 
-  if not board.blackPieces:
-    print("White wins!")
-    exit()
-
-  if not board.whitePieces:
-    print("Black wins!")
-    exit()
-
   input("Press enter to continue day/night cycle.");
   print("")
 

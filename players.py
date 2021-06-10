@@ -1,5 +1,8 @@
 from random import choice
 
+whitePieces = []
+blackPieces = []
+
 class Piece:
   def __init__(self, color, square):
     assert color in ['black', 'white']
@@ -115,3 +118,6 @@ class Pawn(Piece):
       return 'P'
     else:
       return 'p'
+
+pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
+
