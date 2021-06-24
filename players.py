@@ -1,7 +1,25 @@
 from random import choice
 
-whitePieces = []
-blackPieces = []
+class Army:
+  def __init__(self, color):
+    assert color in ['black', 'white']
+    self.color = color
+    self.pieces = []
+
+  def addPiece(self, piece):
+    self.pieces.append(piece)
+
+  def removePiece(self, piece):
+    self.pieces.remove(piece)
+
+  def wakeUp(self):
+    biddings = []
+    for p in self.pieces:
+      biddings.append(p.wakeUp())
+    return biddings
+
+whitePieces = Army('white')
+blackPieces = Army('black')
 
 class Piece:
   def __init__(self, color, square):

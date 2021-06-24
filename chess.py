@@ -19,10 +19,10 @@ while True:
 
   if board.color == 'w':
     print("White to move")
-    biddings = board.dayBreak()
+    biddings = whitePieces.wakeUp()
   else:
     print("Black to move")
-    biddings = board.nightFall()
+    biddings = blackPieces.wakeUp()
 
   # Honor the best bid
   best = -1

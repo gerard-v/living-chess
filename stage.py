@@ -37,9 +37,9 @@ class Square:
     oldpiece = self.getPiece()
     if oldpiece:
       if oldpiece.color == 'white':
-        whitePieces.remove(oldpiece)
+        whitePieces.removePiece(oldpiece)
       if oldpiece.color == 'black':
-        blackPieces.remove(oldpiece)
+        blackPieces.removePiece(oldpiece)
       print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
       if isinstance(oldpiece, King):
         print(piece.color, "wins!")
@@ -146,9 +146,9 @@ class Chessboard:
           self.squares[i][j].active = False
 
           if color == 'white':
-            whitePieces.append(self.squares[i][j].getPiece())
+            whitePieces.addPiece(self.squares[i][j].getPiece())
           else:
-            blackPieces.append(self.squares[i][j].getPiece())
+            blackPieces.addPiece(self.squares[i][j].getPiece())
 
           j += 1
 
@@ -165,7 +165,7 @@ class Chessboard:
     return biddings
 
   def emitVibrations(self):
-    for p in whitePieces + blackPieces:
+    for p in whitePieces.pieces + blackPieces.pieces:
       p.vibrate()
 
   def clearVibrations(self):
