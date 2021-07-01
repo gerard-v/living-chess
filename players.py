@@ -16,7 +16,21 @@ class Army:
     biddings = []
     for p in self.pieces:
       biddings.append(p.wakeUp())
-    return biddings
+    # Honor the best bid
+    best = -1
+    bestIndex = None
+    results = []
+    for i in range(len(biddings)):
+      if biddings[i][0] == best:
+        results.append(i)
+
+      if biddings[i][0] > best:
+        results = [i]
+        best = biddings[i][0]
+
+    # In case of a tie, pick a random bid out of the results
+    bestIndex = choice(results)
+    return biddings[bestIndex]
 
 whitePieces = Army('white')
 blackPieces = Army('black')

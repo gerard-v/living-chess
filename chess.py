@@ -19,28 +19,14 @@ while True:
 
   if board.color == 'w':
     print("White to move")
-    biddings = whitePieces.wakeUp()
+    move = whitePieces.wakeUp()
   else:
     print("Black to move")
-    biddings = blackPieces.wakeUp()
+    move = blackPieces.wakeUp()
 
-  # Honor the best bid
-  best = -1
-  bestIndex = None
-  results = []
-  for i in range(len(biddings)):
-    if biddings[i][0] == best:
-      results.append(i)
-
-    if biddings[i][0] > best:
-      results = [i]
-      best = biddings[i][0]
-
-  # In case of a tie, pick a random bid out of the results
-  bestIndex = choice(results)
   # Let the chess piece move
   try:
-    captureScore = biddings[bestIndex][1].moveTo(biddings[bestIndex][2])
+    captureScore = move[1].moveTo(move[2])
     print(captureScore)
 
     if board.color == 'w':
