@@ -1,10 +1,32 @@
 from random import choice
 
 class Army:
+  playMode = 'computer'
+
   def __init__(self, color):
     assert color in ['black', 'white']
     self.color = color
     self.pieces = []
+
+  def possess(self):
+    self.playMode = 'user'
+
+  def askMove(self):
+    moveString = input("Please enter move: ")
+    moveParams = moveString.split(' ')
+    print(moveParams)
+
+    for p in self.pieces:
+      if p.square.name == moveParams[0]:
+        print('piece ' + p.getName() + ' is going to move to ' + moveParams[1])
+        reachableSquares = p.square.exploreRange(p)
+        for r in reachableSquares:
+          print('square: ' + r.name)
+          if r.name == moveParams[1]:
+            return [0, p, r]
+
+    print('Illegal move, quitting')
+    exit()
 
   def addPiece(self, piece):
     self.pieces.append(piece)
@@ -13,6 +35,9 @@ class Army:
     self.pieces.remove(piece)
 
   def wakeUp(self):
+    if self.playMode == 'user':
+      return self.askMove()
+
     biddings = []
     for p in self.pieces:
       biddings.append(p.wakeUp())
@@ -33,6 +58,7 @@ class Army:
     return biddings[bestIndex]
 
 whitePieces = Army('white')
+whitePieces.possess()
 blackPieces = Army('black')
 
 class Piece:
