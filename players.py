@@ -12,21 +12,20 @@ class Army:
     self.playMode = 'user'
 
   def askMove(self):
-    moveString = input("Please enter move: ")
-    moveParams = moveString.split(' ')
-    print(moveParams)
+    while (True):
+      moveString = input("Please enter move: ")
+      moveParams = moveString.split(' ')
 
-    for p in self.pieces:
-      if p.square.name == moveParams[0]:
-        print('piece ' + p.getName() + ' is going to move to ' + moveParams[1])
-        reachableSquares = p.square.exploreRange(p)
-        for r in reachableSquares:
-          print('square: ' + r.name)
-          if r.name == moveParams[1]:
-            return [0, p, r]
+      for p in self.pieces:
+        if p.square.name == moveParams[0]:
+          print('piece ' + p.getName() + ' is going to move to ' + moveParams[1])
+          reachableSquares = p.square.exploreRange(p)
+          for r in reachableSquares:
+            print('square: ' + r.name)
+            if r.name == moveParams[1]:
+              return [0, p, r]
+      print('I can\'t work with this. Please try again.')
 
-    print('Illegal move, quitting')
-    exit()
 
   def addPiece(self, piece):
     self.pieces.append(piece)
