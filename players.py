@@ -57,7 +57,6 @@ class Army:
     return biddings[bestIndex]
 
 whitePieces = Army('white')
-whitePieces.possess()
 blackPieces = Army('black')
 
 class Piece:

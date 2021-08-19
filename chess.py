@@ -1,4 +1,3 @@
-#! C:\Program Files\Python36-32\python.exe
 import sys
 from getopt import getopt
 from stage import *
@@ -7,6 +6,11 @@ from players import *
 (opts, fen) = getopt(sys.argv[1:],'u:')
 print(opts)
 print(fen)
+
+if 'w' in opts[0][1]:
+  whitePieces.possess()
+if 'b' in opts[0][1]:
+  blackPieces.possess()
 
 if len(sys.argv)>2:
   board = Chessboard(sys.argv[2]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
