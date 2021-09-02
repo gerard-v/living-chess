@@ -7,10 +7,11 @@ from players import *
 print(opts)
 print(fen)
 
-if 'w' in opts[0][1]:
-  whitePieces.possess()
-if 'b' in opts[0][1]:
-  blackPieces.possess()
+if opts:
+  if 'w' in opts[0][1]:
+    whitePieces.possess()
+  if 'b' in opts[0][1]:
+    blackPieces.possess()
 
 if len(sys.argv)>2:
   board = Chessboard(sys.argv[2]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
@@ -24,8 +25,9 @@ blackScore = 0
 
 while True:
 
-  input("Press enter to continue day/night cycle.");
-  print("")
+  if whitePieces.playMode == 'computer' and blackPieces.playMode == 'computer':
+    input("Press enter to continue day/night cycle.");
+    print("")
 
   if board.color == 'w':
     print("White to move")

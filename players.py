@@ -18,10 +18,9 @@ class Army:
 
       for p in self.pieces:
         if p.square.name == moveParams[0]:
-          print('piece ' + p.getName() + ' is going to move to ' + moveParams[1])
           reachableSquares = p.square.exploreRange(p)
           for r in reachableSquares:
-            print('square: ' + r.name)
+            #print(r.name)
             if r.name == moveParams[1]:
               return [0, p, r]
       print('I can\'t work with this. Please try again.')
