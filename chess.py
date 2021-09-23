@@ -40,6 +40,7 @@ while True:
   try:
     captureScore = move[1].moveTo(move[2])
     print(captureScore)
+    # TODO: detect check
 
     if board.color == 'w':
       whiteScore += captureScore

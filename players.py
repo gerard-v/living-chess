@@ -1,5 +1,6 @@
 from random import choice
 
+
 class Army:
   playMode = 'computer'
 
@@ -20,11 +21,10 @@ class Army:
         if p.square.name == moveParams[0]:
           reachableSquares = p.square.exploreRange(p)
           for r in reachableSquares:
-            #print(r.name)
+            # print(r.name)
             if r.name == moveParams[1]:
               return [0, p, r]
       print('I can\'t work with this. Please try again.')
-
 
   def addPiece(self, piece):
     self.pieces.append(piece)
@@ -55,8 +55,10 @@ class Army:
     bestIndex = choice(results)
     return biddings[bestIndex]
 
+
 whitePieces = Army('white')
 blackPieces = Army('black')
+
 
 class Piece:
   def __init__(self, color, square):
@@ -90,6 +92,15 @@ class Piece:
 
     # TODO: Sense vibrations on the current square (are you in danger?)
 
+    # if piece type == King: filter options on enemy vibrations
+    if isinstance(self, King) or isinstance(self, Pawn): # TODO: remove isinstance Pawn
+      for o in options:
+        if (self.color == 'white' and o.blackVibrations > 0
+            or self.color == 'black' and o.whiteVibrations > 0):
+          print ("Removing option " + o.name + " for " + self.getName())
+          options.remove(o)
+
+    # Can you capture a piece of the opponent?
     r = [o for o in options if o.piece and o.piece.color != self.color]
     if r:
       c = max(r, key=lambda s: s.piece.value)
@@ -152,6 +163,7 @@ class Bishop(Piece):
     else:
       return 'b'
 
+
 class Rook(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
@@ -162,6 +174,7 @@ class Rook(Piece):
       return 'R'
     else:
       return 'r'
+
 
 class Pawn(Piece):
   def __init__(self, color, square):
@@ -174,5 +187,5 @@ class Pawn(Piece):
     else:
       return 'p'
 
-pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
 
+pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
