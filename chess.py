@@ -18,7 +18,7 @@ if len(sys.argv)>2:
 else:
   board = Chessboard()
 board.print()
-board.emitVibrations()
+# board.emitVibrations()
 
 whiteScore = 0
 blackScore = 0
@@ -38,6 +38,7 @@ while True:
 
   # Let the chess piece move
   try:
+    board.status()
     captureScore = move[1].moveTo(move[2])
     print(captureScore)
     # TODO: detect check

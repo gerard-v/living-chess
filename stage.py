@@ -20,6 +20,7 @@ class Square:
     self.board = board
     self.blackVibrations = 0
     self.whiteVibrations = 0
+    self.vibrations = []
 
   def __str__(self):
     if self.piece:
@@ -56,13 +57,19 @@ class Square:
   def clearVibrations(self):
     self.whiteVibrations = 0
     self.blackVibrations = 0
+    self.vibrations = []
 
-  def expandRange(self, direction):
+  def status(self):
+    return self.name + ": (w,b,p) = (" + str(self.whiteVibrations) + "," + str(self.blackVibrations)\
+           + "," + str(self.vibrations) + ") "
+
+  def propagate(self, direction, piece):
+    self.vibrations.append(str(piece))
     if self.piece:
       return [self]
     lyst = [self]
     if direction in self.neighbours:
-      lyst.extend(self.neighbours[direction].expandRange(direction))
+      lyst.extend(self.neighbours[direction].propagate(direction, piece))
     return lyst
 
   def exploreRange(self, piece):
@@ -97,13 +104,13 @@ class Square:
     # Long range pieces
     lyst = []
     if isinstance(piece, Queen):
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) < 3])
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) < 3])
       return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Bishop):
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 2])
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 2])
       return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Rook):
-      lyst.extend([self.neighbours[d].expandRange(d) for d in self.neighbours if len(d) == 1])
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 1])
       return [item for sublist in lyst for item in sublist]
 
 class Chessboard:
@@ -184,3 +191,8 @@ class Chessboard:
           print(square, end=' ')
       print()
     print()
+
+  def status(self):
+    for row in self.squares:
+      for square in row:
+        print(square.status())
