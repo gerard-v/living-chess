@@ -18,8 +18,6 @@ class Square:
     self.name = name
     self.neighbours = {}
     self.board = board
-    self.blackVibrations = 0
-    self.whiteVibrations = 0
     self.vibrations = []
 
   def __str__(self):
@@ -49,22 +47,15 @@ class Square:
     self.active = True
 
   def storeVibration(self, piece):
-    if piece.color == 'white':
-      self.whiteVibrations += 1
-    else:
-      self.blackVibrations += 1
+    self.vibrations.append(piece)
 
   def clearVibrations(self):
-    self.whiteVibrations = 0
-    self.blackVibrations = 0
     self.vibrations = []
 
   def status(self):
-    return self.name + ": (w,b,p) = (" + str(self.whiteVibrations) + "," + str(self.blackVibrations)\
-           + "," + str(self.vibrations) + ") "
+    return self.name + ": " + str(self.vibrations)
 
   def propagate(self, direction, piece):
-    self.vibrations.append(str(piece))
     if self.piece:
       return [self]
     lyst = [self]

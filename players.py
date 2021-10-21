@@ -70,8 +70,6 @@ class Piece:
     return type(self).__name__ + " (" + str(self.value) + ")"
 
   def moveTo(self, square):
-    # print("White control score: ", self.square.whiteVibrations)
-    # print("Black control score: ", self.square.blackVibrations)
     print(self, self.square.name, "-", square.name)
     self.square.clear()
     self.square = square
@@ -95,10 +93,12 @@ class Piece:
     # if piece type == King: filter options on enemy vibrations
     if isinstance(self, King) or isinstance(self, Pawn): # TODO: remove isinstance Pawn
       for o in options:
-        if (self.color == 'white' and o.blackVibrations > 0
-            or self.color == 'black' and o.whiteVibrations > 0):
-          print ("Removing option " + o.name + " for " + self.getName())
-          options.remove(o)
+        pass
+        # TODO: remove illegal options where the King puts himself in check
+        #if (self.color == 'white' and o.blackVibrations > 0
+        #    or self.color == 'black' and o.whiteVibrations > 0):
+        #  print ("Removing option " + o.name + " for " + self.getName())
+        #  options.remove(o)
 
     # Can you capture a piece of the opponent?
     r = [o for o in options if o.piece and o.piece.color != self.color]

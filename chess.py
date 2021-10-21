@@ -26,8 +26,11 @@ blackScore = 0
 while True:
 
   if whitePieces.playMode == 'computer' and blackPieces.playMode == 'computer':
-    input("Press enter to continue day/night cycle.");
+    input("Press enter to continue day/night cycle.")
     print("")
+
+  board.clearVibrations()
+  board.emitVibrations()
 
   if board.color == 'w':
     print("White to move")
