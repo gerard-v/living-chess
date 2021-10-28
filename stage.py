@@ -63,6 +63,36 @@ class Square:
       lyst.extend(self.neighbours[direction].propagate(direction, piece))
     return lyst
 
+  def propagateVibrations(self, piece):
+    if isinstance(piece, King):
+      return [self.neighbours[d] for d in self.neighbours if len(d) < 3]
+    if isinstance(piece, Knight):
+      return [self.neighbours[d] for d in self.neighbours if len(d) == 3]
+    if isinstance(piece, Pawn):
+      targets = []
+      if piece.color == 'white':
+        forward = 'N'
+      else:
+        forward = 'S'
+      if forward+'W' in self.neighbours:
+        targets.append(self.neighbours[forward+'W'])
+      if forward+'E' in self.neighbours:
+        targets.append(self.neighbours[forward+'E'])
+      # directions = [forward+'W', forward+'E']
+      # targets = [self.neighbours[i] for i in directions if i in self.neighbours]
+      return targets
+    # Long range pieces
+    lyst = []
+    if isinstance(piece, Queen):
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) < 3])
+      return [item for sublist in lyst for item in sublist]
+    if isinstance(piece, Bishop):
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 2])
+      return [item for sublist in lyst for item in sublist]
+    if isinstance(piece, Rook):
+      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 1])
+      return [item for sublist in lyst for item in sublist]
+
   def exploreRange(self, piece):
     # Short range pieces
     if isinstance(piece, King):

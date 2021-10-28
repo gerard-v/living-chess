@@ -81,8 +81,8 @@ class Piece:
     return score
 
   def vibrate(self):
-    reachableSquares = self.square.exploreRange(self)
-    for r in reachableSquares:
+    targetSquares = self.square.propagateVibrations(self)
+    for r in targetSquares:
       r.storeVibration(self)
 
   def wakeUp(self):
