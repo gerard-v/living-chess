@@ -55,6 +55,12 @@ class Square:
   def status(self):
     return self.name + ": " + str(self.vibrations)
 
+  def isUnderAttack(self, piece):
+    for p in self.vibrations:
+      if p.color != piece.color:
+        return True
+    return False
+
   def propagate(self, direction, piece):
     if self.piece:
       return [self]

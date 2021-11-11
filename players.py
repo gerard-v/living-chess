@@ -89,6 +89,10 @@ class Piece:
     options = self.square.exploreRange(self)
 
     # TODO: Sense vibrations on the current square (are you in danger?)
+    if isinstance(self, King) and self.square.isUnderAttack(self):
+      print(str(self) + ": I'm in check!")
+
+    # TODO: for every piece, if under attack add something to your bid
 
     # if piece type == King: filter options on enemy vibrations
     if isinstance(self, King) or isinstance(self, Pawn): # TODO: remove isinstance Pawn
