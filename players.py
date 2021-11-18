@@ -33,12 +33,10 @@ class Army:
     self.pieces.remove(piece)
 
   def wakeUp(self):
-    if self.playMode == 'user':
-      return self.askMove()
-
     biddings = []
     for p in self.pieces:
       biddings.append(p.wakeUp())
+
     # Honor the best bid
     best = -1
     bestIndex = None
@@ -50,10 +48,13 @@ class Army:
       if biddings[i][0] > best:
         results = [i]
         best = biddings[i][0]
-
     # In case of a tie, pick a random bid out of the results
     bestIndex = choice(results)
-    return biddings[bestIndex]
+
+    if self.playMode == 'user':
+      return self.askMove()
+    else:
+      return biddings[bestIndex]
 
 
 whitePieces = Army('white')
@@ -95,9 +96,11 @@ class Piece:
     # TODO: for every piece, if under attack add something to your bid
 
     # if piece type == King: filter options on enemy vibrations
-    if isinstance(self, King) or isinstance(self, Pawn): # TODO: remove isinstance Pawn
+    if isinstance(self, King):
       for o in options:
-        pass
+        print(o.name)
+        if o.isUnderAttack(self):
+          options.remove(o)
         # TODO: remove illegal options where the King puts himself in check
         #if (self.color == 'white' and o.blackVibrations > 0
         #    or self.color == 'black' and o.whiteVibrations > 0):
