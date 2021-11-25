@@ -59,42 +59,42 @@ class Square:
     return False
 
   def propagate(self, direction, piece):
-    if self.piece:
-      return [self]
-    lyst = [self]
-    if direction in self.neighbours:
-      lyst.extend(self.neighbours[direction].propagate(direction, piece))
-    return lyst
+    self.vibrations.append(piece)
+    if not self.piece and direction in self.neighbours:
+      self.neighbours[direction].propagate(direction, piece)
 
   def propagateVibrations(self, piece):
     if isinstance(piece, King):
-      return [self.neighbours[d] for d in self.neighbours if len(d) < 3]
+      for d in self.neighbours:
+        if len(d) < 3:
+          self.neighbours[d].storeVibration(piece)
     if isinstance(piece, Knight):
-      return [self.neighbours[d] for d in self.neighbours if len(d) == 3]
+      for d in self.neighbours:
+        if len(d) == 3:
+          self.neighbours[d].storeVibration(piece)
     if isinstance(piece, Pawn):
-      targets = []
       if piece.color == 'white':
         forward = 'N'
       else:
         forward = 'S'
       if forward+'W' in self.neighbours:
-        targets.append(self.neighbours[forward+'W'])
+        self.neighbours[forward+'W'].storeVibration(piece)
       if forward+'E' in self.neighbours:
-        targets.append(self.neighbours[forward+'E'])
-      # directions = [forward+'W', forward+'E']
-      # targets = [self.neighbours[i] for i in directions if i in self.neighbours]
-      return targets
+        self.neighbours[forward+'E'].storeVibration(piece)
+
     # Long range pieces
-    lyst = []
     if isinstance(piece, Queen):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) < 3])
-      return [item for sublist in lyst for item in sublist]
+      for d in self.neighbours:
+        if len(d) < 3:
+          self.neighbours[d].propagate(d, piece)
     if isinstance(piece, Bishop):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 2])
-      return [item for sublist in lyst for item in sublist]
+      for d in self.neighbours:
+        if len(d) == 2:
+          self.neighbours[d].propagate(d, piece)
     if isinstance(piece, Rook):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 1])
-      return [item for sublist in lyst for item in sublist]
+      for d in self.neighbours:
+        if len(d) == 1:
+          self.neighbours[d].propagate(d, piece)
 
   def exploreRange(self, piece):
     # Short range pieces
@@ -128,14 +128,22 @@ class Square:
     # Long range pieces
     lyst = []
     if isinstance(piece, Queen):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) < 3])
+      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) < 3])
       return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Bishop):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 2])
+      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) == 2])
       return [item for sublist in lyst for item in sublist]
     if isinstance(piece, Rook):
-      lyst.extend([self.neighbours[d].propagate(d, piece) for d in self.neighbours if len(d) == 1])
+      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) == 1])
       return [item for sublist in lyst for item in sublist]
+
+  def explore(self, direction, piece):
+    if self.piece:
+      return [self]
+    lyst = [self]
+    if direction in self.neighbours:
+      lyst.extend(self.neighbours[direction].explore(direction, piece))
+    return lyst
 
 class Chessboard:
   # These directions are used to connect the squares
