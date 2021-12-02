@@ -1,5 +1,7 @@
 from random import choice
 
+from stage import Chessboard
+
 
 class Army:
   playMode = 'computer'
@@ -137,6 +139,7 @@ class Queen(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 9
+    self.directions = [d for d in Chessboard.directions if len(d) < 3]
 
   def __str__(self):
     if self.color == 'white':

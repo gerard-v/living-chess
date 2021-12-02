@@ -86,7 +86,7 @@ class Square:
     # TODO: refactor, make shorter
     if isinstance(piece, Queen):
       for d in self.neighbours:
-        if len(d) < 3:
+        if len(d) < 3: # if len(d) <operator for: Queen> <number for: Queen>:
           self.neighbours[d].propagate(d, piece)
     if isinstance(piece, Bishop):
       for d in self.neighbours:
