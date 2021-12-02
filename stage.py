@@ -83,6 +83,7 @@ class Square:
         self.neighbours[forward+'E'].storeVibration(piece)
 
     # Long range pieces
+    # TODO: refactor, make shorter
     if isinstance(piece, Queen):
       for d in self.neighbours:
         if len(d) < 3:
