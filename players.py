@@ -1,7 +1,11 @@
 from random import choice
-
-from stage import Chessboard
-
+# The following imports to access the directions from class Chessboard
+#   in module stage.py don't work:
+# from stage import Chessboard (ImportError: cannot import name 'Chessboard')
+# from stage import Chessboard as Schaakbord (same message)
+# from stage import * (NameError: name 'stage' is not defined)
+# import Chessboard (ImportError: No module named 'Chessboard')
+import stage # for directions in class Chessboard
 
 class Army:
   playMode = 'computer'
@@ -139,7 +143,7 @@ class Queen(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 9
-    self.directions = [d for d in Chessboard.directions if len(d) < 3]
+    self.directions = [d for d in self.square.board.directions if len(d) < 3]
 
   def __str__(self):
     if self.color == 'white':
@@ -152,6 +156,7 @@ class Knight(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 3
+    self.directions = [d for d in stage.Chessboard.directions if len(d) == 3]
 
   def __str__(self):
     if self.color == 'white':
@@ -197,3 +202,4 @@ class Pawn(Piece):
 
 
 pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
+
