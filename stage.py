@@ -52,6 +52,20 @@ class Square:
   def clearVibrations(self):
     self.vibrations = []
 
+  def control(self):
+    count = 0
+    for p in self.vibrations:
+      if p.color == 'white':
+        count += 1
+      else:
+        count -= 1
+    if count > 0:
+      return 'white'
+    elif count < 0:
+      return 'black'
+    else:
+      return None
+
   def isUnderAttack(self, piece):
     for p in self.vibrations:
       if p.color != piece.color:
@@ -195,7 +209,13 @@ class Chessboard:
           print(colors.RED + str(square) + colors.ENDC, end=' ')
           square.active = False
         else:
-          print(square, end=' ')
+          if square.control() == 'white':
+            print(colors.GREEN + str(square) + colors.ENDC, end=' ')
+          elif square.control() == 'black':
+            print(colors.BLUE + str(square) + colors.ENDC, end=' ')
+          else:
+            print(square, end=' ')
+
       print()
     print()
 
