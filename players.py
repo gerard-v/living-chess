@@ -131,6 +131,8 @@ class King(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 100
+    self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
+    self.range = 'short'
 
   def __str__(self):
     if self.color == 'white':
@@ -143,7 +145,8 @@ class Queen(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 9
-    self.directions = [d for d in self.square.board.directions if len(d) < 3]
+    self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
+    self.range = 'long'
 
   def __str__(self):
     if self.color == 'white':
@@ -157,6 +160,7 @@ class Knight(Piece):
     Piece.__init__(self, color, square)
     self.value = 3
     self.directions = [d for d in stage.Chessboard.directions if len(d) == 3]
+    self.range = 'short'
 
   def __str__(self):
     if self.color == 'white':
@@ -169,6 +173,8 @@ class Bishop(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 3
+    self.directions = [d for d in stage.Chessboard.directions if len(d) == 2]
+    self.range = 'long'
 
   def __str__(self):
     if self.color == 'white':
@@ -181,6 +187,8 @@ class Rook(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 5
+    self.directions = [d for d in stage.Chessboard.directions if len(d) == 1]
+    self.range = 'long'
 
   def __str__(self):
     if self.color == 'white':
@@ -193,6 +201,10 @@ class Pawn(Piece):
   def __init__(self, color, square):
     Piece.__init__(self, color, square)
     self.value = 1
+    self.range = 'short'
+    self.forward = 'N' if self.color == 'white' else 'S'
+    for sideways in 'EW':
+      self.directions = [self.forward + d for d in sideways]
 
   def __str__(self):
     if self.color == 'white':

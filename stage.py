@@ -64,38 +64,12 @@ class Square:
       self.neighbours[direction].propagate(direction, piece)
 
   def propagateVibrations(self, piece):
-    if isinstance(piece, King):
-      for d in self.neighbours:
-        if len(d) < 3:
+    for d in piece.directions:
+      if d in self.neighbours:
+        if piece.range == 'long':
+          self.neighbours[d].propagate(d, piece)
+        else:
           self.neighbours[d].storeVibration(piece)
-    if isinstance(piece, Knight):
-      for d in self.neighbours:
-        if len(d) == 3:
-          self.neighbours[d].storeVibration(piece)
-    if isinstance(piece, Pawn):
-      if piece.color == 'white':
-        forward = 'N'
-      else:
-        forward = 'S'
-      if forward+'W' in self.neighbours:
-        self.neighbours[forward+'W'].storeVibration(piece)
-      if forward+'E' in self.neighbours:
-        self.neighbours[forward+'E'].storeVibration(piece)
-
-    # Long range pieces
-    # TODO: refactor, make shorter
-    if isinstance(piece, Queen):
-      for d in self.neighbours:
-        if len(d) < 3: # if len(d) <operator for: Queen> <number for: Queen>:
-          self.neighbours[d].propagate(d, piece)
-    if isinstance(piece, Bishop):
-      for d in self.neighbours:
-        if len(d) == 2:
-          self.neighbours[d].propagate(d, piece)
-    if isinstance(piece, Rook):
-      for d in self.neighbours:
-        if len(d) == 1:
-          self.neighbours[d].propagate(d, piece)
 
   def exploreRange(self, piece):
     # Short range pieces
