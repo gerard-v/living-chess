@@ -86,45 +86,32 @@ class Square:
           self.neighbours[d].storeVibration(piece)
 
   def exploreRange(self, piece):
-    # Short range pieces
-    if isinstance(piece, King):
-      return [self.neighbours[d] for d in self.neighbours if len(d) < 3]
-    if isinstance(piece, Knight):
-      return [self.neighbours[d] for d in self.neighbours if len(d) == 3]
+    options = []
+    # Pawn
     if isinstance(piece, Pawn):
-      if piece.color == 'white':
-        forward = 'N'
-        opponent = 'black'
-        startingRow = '2'
-      else:
-        forward = 'S'
-        opponent = 'white'
-        startingRow = '7'
-      options = []
+      # Forward moves: one square...
+      forward = piece.forward
       if forward in self.neighbours and not self.neighbours[forward].piece:
         options.append(self.neighbours[forward])
-      if (piece.square.name[1] == startingRow
-          and not self.neighbours[forward].piece
-          and not self.neighbours[forward].neighbours[forward].piece):
-        options.append(self.neighbours[forward].neighbours[forward])
-      if forward + "E" in self.neighbours and self.neighbours[forward + "E"].piece and self.neighbours[
-        forward + "E"].piece.color == opponent:
-        options.append(self.neighbours[forward + "E"])
-      if forward + "W" in self.neighbours and self.neighbours[forward + "W"].piece and self.neighbours[
-        forward + "W"].piece.color == opponent:
-        options.append(self.neighbours[forward + "W"])
+        # ...and two squares
+        if (self.name[1] == piece.startingRow
+            and not self.neighbours[forward].neighbours[forward].piece):
+          options.append(self.neighbours[forward].neighbours[forward])
+      # Capture moves
+      for d in piece.directions:
+        if (d in self.neighbours
+            and self.neighbours[d].piece
+            and self.neighbours[d].piece.color != piece.color):
+          options.append(self.neighbours[d])
       return options
-    # Long range pieces
-    lyst = []
-    if isinstance(piece, Queen):
-      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) < 3])
-      return [item for sublist in lyst for item in sublist]
-    if isinstance(piece, Bishop):
-      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) == 2])
-      return [item for sublist in lyst for item in sublist]
-    if isinstance(piece, Rook):
-      lyst.extend([self.neighbours[d].explore(d, piece) for d in self.neighbours if len(d) == 1])
-      return [item for sublist in lyst for item in sublist]
+    # Other pieces
+    for d in piece.directions:
+      if d in self.neighbours:
+        if piece.range == 'long':
+          options.extend(self.neighbours[d].explore(d, piece))
+        else:
+          options.append(self.neighbours[d])
+    return options
 
   def explore(self, direction, piece):
     if self.piece:

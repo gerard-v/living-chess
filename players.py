@@ -72,6 +72,12 @@ class Piece:
     assert color in ['black', 'white']
     self.color = color
     self.square = square
+    for r in pieces:
+      if isinstance(self,pieces[r]):
+        self.symbol = r if self.color == 'black' else r.upper()
+
+  def __str__(self):
+    return self.symbol
 
   def getName(self):
     return type(self).__name__ + " (" + str(self.value) + ")"
@@ -134,12 +140,6 @@ class King(Piece):
     self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
     self.range = 'short'
 
-  def __str__(self):
-    if self.color == 'white':
-      return 'K'
-    else:
-      return 'k'
-
 
 class Queen(Piece):
   def __init__(self, color, square):
@@ -147,12 +147,6 @@ class Queen(Piece):
     self.value = 9
     self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
     self.range = 'long'
-
-  def __str__(self):
-    if self.color == 'white':
-      return 'Q'
-    else:
-      return 'q'
 
 
 class Knight(Piece):
@@ -162,12 +156,6 @@ class Knight(Piece):
     self.directions = [d for d in stage.Chessboard.directions if len(d) == 3]
     self.range = 'short'
 
-  def __str__(self):
-    if self.color == 'white':
-      return 'N'
-    else:
-      return 'n'
-
 
 class Bishop(Piece):
   def __init__(self, color, square):
@@ -175,12 +163,6 @@ class Bishop(Piece):
     self.value = 3
     self.directions = [d for d in stage.Chessboard.directions if len(d) == 2]
     self.range = 'long'
-
-  def __str__(self):
-    if self.color == 'white':
-      return 'B'
-    else:
-      return 'b'
 
 
 class Rook(Piece):
@@ -190,12 +172,6 @@ class Rook(Piece):
     self.directions = [d for d in stage.Chessboard.directions if len(d) == 1]
     self.range = 'long'
 
-  def __str__(self):
-    if self.color == 'white':
-      return 'R'
-    else:
-      return 'r'
-
 
 class Pawn(Piece):
   def __init__(self, color, square):
@@ -203,14 +179,8 @@ class Pawn(Piece):
     self.value = 1
     self.range = 'short'
     self.forward = 'N' if self.color == 'white' else 'S'
-    for sideways in 'EW':
-      self.directions = [self.forward + d for d in sideways]
-
-  def __str__(self):
-    if self.color == 'white':
-      return 'P'
-    else:
-      return 'p'
+    self.directions = [self.forward + d for d in 'EW']
+    self.startingRow = '2' if self.color == 'white' else '7'
 
 
 pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
