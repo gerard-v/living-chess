@@ -41,7 +41,7 @@ while True:
 
   # Let the chess piece move
   try:
-    board.status()
+    #board.status()
     captureScore = move[1].moveTo(move[2])
     print(captureScore)
     # TODO: detect check
