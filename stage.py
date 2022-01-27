@@ -66,6 +66,15 @@ class Square:
     else:
       return None
 
+  def gain(self, color):
+    sum = 0
+    for p in self.vibrations:
+      if p.color == color:
+        sum = sum - p.value
+      else:
+        sum = sum + p.value
+    return sum
+
   def isUnderAttack(self, piece):
     for p in self.vibrations:
       if p.color != piece.color:

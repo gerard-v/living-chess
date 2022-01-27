@@ -119,10 +119,13 @@ class Piece:
       c = max(r, key=lambda s: s.piece.value)
       # Idea: modify bid if more enemy vibrations than friendly vibrations
 
-      print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
       if 1 + c.piece.value / self.value >= 2:
+        print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
         return [1 + c.piece.value / self.value, self, c]
-      else: # TODO: look at the target's defense, is it protected?
+      else:
+        if c.control() == self.color and c.gain(self.color) > 0:
+          print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
+          return [1 + c.piece.value / self.value, self, c]
         return [0, self, None]
     else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]
