@@ -20,3 +20,5 @@ Notes
    0  a1 b1  ..... g1 h1
       0               7  = j
 
+- Problem FEN: 5k1P/6b1/8/P1p1P1p1/2p3n1/2P2NP1/Q2K1P1P/1r3BR1 w - - 0 1
+  (White king sometimes moves to e3, which should not be possible)

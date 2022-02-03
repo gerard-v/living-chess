@@ -99,19 +99,22 @@ class Piece:
   def wakeUp(self):
     options = self.square.exploreRange(self)
     for o in options:
+      if isinstance(self, King):
+        print(o.name)
       if o.piece and o.piece.color == self.color:
         options.remove(o)
 
-    # Sense vibrations on the current square (are you in danger?)
-    if isinstance(self, King) and self.square.isUnderAttack(self):
-      print(str(self) + ": I'm in check!")
+    if isinstance(self, King):
       for o in options:
         print(o.name)
         if o.isUnderAttack(self):
           options.remove(o)
           print("Removed: " + o.name)
-      if len(options):
-        return [self.value, self, choice(options)]
+      # Sense vibrations on the current square (are you in danger?)
+      if self.square.isUnderAttack(self):
+        print(str(self) + ": I'm in check!")
+        if len(options):
+          return [self.value, self, choice(options)]
 
     # Can you capture a piece of the opponent?
     r = [o for o in options if o.piece and o.piece.color != self.color]

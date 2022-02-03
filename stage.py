@@ -117,17 +117,17 @@ class Square:
     for d in piece.directions:
       if d in self.neighbours:
         if piece.range == 'long':
-          options.extend(self.neighbours[d].explore(d, piece))
+          options.extend(self.neighbours[d].explore(d))
         else:
           options.append(self.neighbours[d])
     return options
 
-  def explore(self, direction, piece):
+  def explore(self, direction):
     if self.piece:
       return [self]
     lyst = [self]
     if direction in self.neighbours:
-      lyst.extend(self.neighbours[direction].explore(direction, piece))
+      lyst.extend(self.neighbours[direction].explore(direction))
     return lyst
 
 class Chessboard:
