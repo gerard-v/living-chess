@@ -3,20 +3,24 @@ from getopt import getopt
 from stage import *
 from players import *
 
+# Process command line arguments
 (opts, fen) = getopt(sys.argv[1:],'u:')
-print(opts)
-print(fen)
 
-if opts:
-  if 'w' in opts[0][1]:
-    whitePieces.possess()
-  if 'b' in opts[0][1]:
-    blackPieces.possess()
+for o in opts:
+  if o[0] == '-u':
+    if 'w' in o[1]:
+      whitePieces.possess()
+      print("User plays white.")
+    if 'b' in o[1]:
+      blackPieces.possess()
+      print("User plays black.")
 
-if len(sys.argv)>2:
-  board = Chessboard(sys.argv[2]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
+if fen:
+  print("starting position:","'"+fen[0]+"'")
+  board = Chessboard(fen[0]) # e.g. '4k3/8/8/8/8/8/8/4K3 w - - 0 1' (kings only)
 else:
   board = Chessboard()
+
 board.print()
 # board.emitVibrations()
 
