@@ -98,18 +98,14 @@ class Piece:
 
   def wakeUp(self):
     options = self.square.exploreRange(self)
-    for o in options:
-      if isinstance(self, King):
-        print(o.name)
-      if o.piece and o.piece.color == self.color:
-        options.remove(o)
+    # Remove squares occupied by own pieces
+    options = [o for o in options if not o.piece or o.piece.color != self.color]
 
+    # Remove squares where King can be captured
     if isinstance(self, King):
-      for o in options:
-        print(o.name)
-        if o.isUnderAttack(self):
-          options.remove(o)
-          print("Removed: " + o.name)
+      print("Options for King before trimming:",[o.name for o in options])
+      options = [o for o in options if not o.isUnderAttack(self)]
+      print("Options for King after trimming:",[o.name for o in options])
       # Sense vibrations on the current square (are you in danger?)
       if self.square.isUnderAttack(self):
         print(str(self) + ": I'm in check!")
