@@ -21,25 +21,26 @@ if fen:
 else:
   board = Chessboard()
 
-board.print()
-# board.emitVibrations()
-
 whiteScore = 0
 blackScore = 0
 
+# Main game loop
 while True:
+  # Emit vibrations by both armies
+  board.clearVibrations()
+  board.emitVibrations()
+  board.print()
 
   if whitePieces.playMode == 'computer' and blackPieces.playMode == 'computer':
     input("Press enter to continue day/night cycle.")
     print("")
 
-  board.clearVibrations()
-  board.emitVibrations()
-
   if board.color == 'w':
+    # Daybreak
     print("White to move")
     move = whitePieces.wakeUp()
   else:
+    # Nightfall
     print("Black to move")
     move = blackPieces.wakeUp()
 
@@ -61,14 +62,13 @@ while True:
     print("Stalemate")
     exit()
 
-  # Emit vibrations by both armies
-  board.clearVibrations()
-  board.emitVibrations()
-  board.print()
   # Switch between black and white
   if board.color == 'b':
     board.color = 'w'
   else:
     board.color = 'b'
+  # Alternative formulations:
+  # board.color = 'w' if board.color = 'b' else 'b'
+  # board.color = 'bw'['bw'.index(board.color)-1]
 
 

@@ -176,18 +176,6 @@ class Chessboard:
 
           j += 1
 
-  def dayBreak(self):
-    biddings = []
-    for p in whitePieces:
-      biddings.append(p.wakeUp())
-    return biddings
-
-  def nightFall(self):
-    biddings = []
-    for p in blackPieces:
-      biddings.append(p.wakeUp())
-    return biddings
-
   def emitVibrations(self):
     for p in whitePieces.pieces + blackPieces.pieces:
       p.vibrate()
