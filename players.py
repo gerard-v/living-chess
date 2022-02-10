@@ -103,9 +103,9 @@ class Piece:
 
     # Remove squares where King can be captured
     if isinstance(self, King):
-      print("Options for King before trimming:",[o.name for o in options])
+      print("Options for King before trimming:", [o.name for o in options])
       options = [o for o in options if not o.isUnderAttack(self)]
-      print("Options for King after trimming:",[o.name for o in options])
+      print("Options for King after trimming:", [o.name for o in options])
       # Sense vibrations on the current square (are you in danger?)
       if self.square.isUnderAttack(self):
         print(str(self) + ": I'm in check!")
@@ -125,13 +125,13 @@ class Piece:
         if c.control() == self.color and c.gain(self.color) > 0:
           print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
           return [1 + c.piece.value / self.value, self, c]
-        return [0, self, None]
+        return [0.1, self, c]
     else:
       r = [o for o in options if not o.piece or o.piece.color != self.color]
       if r:
         return [1, self, choice(r)]
       else:
-        return [0, self, None]
+        return [0, self, None] # no moves available
 
 
 class King(Piece):
