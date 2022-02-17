@@ -90,7 +90,11 @@ class Piece:
       score = self.square.getPiece().value
     else:
       score = 0
-    self.square.setPiece(self)
+    square.setPiece(self)
+    # TODO: figure out why the following lines result in Stalemate
+    if isinstance(self, Pawn) and self.forward not in square.directions:
+      print('promoting ' + self.getName())
+      square.promotePawn(self)
     return score
 
   def vibrate(self):

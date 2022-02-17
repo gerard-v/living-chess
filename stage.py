@@ -46,6 +46,18 @@ class Square:
     self.piece = piece
     self.active = True
 
+  def promotePawn(self, piece):
+    if piece.color == 'white' and self.name[1] == 8:
+      whitePieces.removePiece(piece)
+      newpiece = Queen('white', self)
+      self.setPiece(newpiece)
+      whitePieces.addPiece(newpiece)
+    if piece.color == 'black' and self.name[1] == 1:
+      blackPieces.removePiece(piece)
+      newpiece = Queen('black', self)
+      self.setPiece(newpiece)
+      blackPieces.addPiece(newpiece)
+
   def storeVibration(self, piece):
     self.vibrations.append(piece)
 
