@@ -91,9 +91,8 @@ class Piece:
     else:
       score = 0
     square.setPiece(self)
-    # TODO: figure out why the following lines result in Stalemate
-    if isinstance(self, Pawn) and self.forward not in square.directions:
-      print('promoting ' + self.getName())
+    # Promote pawn if possible
+    if isinstance(self, Pawn) and self.forward not in square.neighbours:
       square.promotePawn(self)
     return score
 

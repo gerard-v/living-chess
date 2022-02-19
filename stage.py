@@ -39,7 +39,8 @@ class Square:
         whitePieces.removePiece(oldpiece)
       if oldpiece.color == 'black':
         blackPieces.removePiece(oldpiece)
-      print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
+      if oldpiece.color != piece.color:
+        print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
       if isinstance(oldpiece, King):
         print(piece.color, "wins!")
         exit()
@@ -47,16 +48,17 @@ class Square:
     self.active = True
 
   def promotePawn(self, piece):
-    if piece.color == 'white' and self.name[1] == 8:
-      whitePieces.removePiece(piece)
-      newpiece = Queen('white', self)
-      self.setPiece(newpiece)
-      whitePieces.addPiece(newpiece)
-    if piece.color == 'black' and self.name[1] == 1:
-      blackPieces.removePiece(piece)
-      newpiece = Queen('black', self)
-      self.setPiece(newpiece)
-      blackPieces.addPiece(newpiece)
+    if piece.color == 'white' and self.name[1] == '8':
+      # Replace pawn by queen
+      self.setPiece(Queen('white', self))
+      # Enlist
+      whitePieces.addPiece(self.piece)
+    if piece.color == 'black' and self.name[1] == '1':
+      # Replace pawn by queen
+      self.setPiece(Queen('black', self))
+      # Enlist
+      blackPieces.addPiece(self.piece)
+    print(piece.color, piece.getName(), "on", self.name, "promoted to", self.piece.getName())
 
   def storeVibration(self, piece):
     self.vibrations.append(piece)
@@ -82,9 +84,9 @@ class Square:
     sum = 0
     for p in self.vibrations:
       if p.color == color:
-        sum = sum - p.value
+        sum -= p.value
       else:
-        sum = sum + p.value
+        sum += p.value
     return sum
 
   def isUnderAttack(self, piece):
