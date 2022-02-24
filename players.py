@@ -186,6 +186,22 @@ class Pawn(Piece):
     self.directions = [self.forward + d for d in 'EW']
     self.startingRow = '2' if self.color == 'white' else '7'
 
+  def moveTo(self, square):
+    if square not in [self.square.neighbours[d] for d in self.square.neighbours]:
+      print('Giant step forward by pawn, skipped square: ' + self.square.neighbours[self.forward].name)
+      # TODO: introduce ghost pawn
+    return Piece.moveTo(self, square)
+
+
+# Virtual piece for enabling en passant capture
+# Not enlisted in the army
+class GhostPawn(Piece):
+  def __init__(self, parent, color, square):
+    Piece.__init__(self, parent, color, square)
+    self.value = 1
+    self.parent = parent
+    self.symbol = 'x'
+
 
 pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
 
