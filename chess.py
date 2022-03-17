@@ -38,6 +38,11 @@ while True:
   if board.color == 'w':
     # Daybreak
     print("White to move")
+    # Remove ghost pawns
+    for p in whitePieces.pieces:
+      if isinstance(p, GhostPawn):
+        whitePieces.pieces.remove(p)
+        break
     move = whitePieces.wakeUp()
   else:
     # Nightfall
@@ -58,7 +63,8 @@ while True:
     print("White score: " + str(whiteScore))
     print("Black score: " + str(blackScore))
 
-  except AttributeError:
+  except AttributeError as e:
+    print(e)
     print("Stalemate")
     exit()
 

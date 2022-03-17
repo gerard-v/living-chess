@@ -190,6 +190,12 @@ class Pawn(Piece):
     if square not in [self.square.neighbours[d] for d in self.square.neighbours]:
       print('Giant step forward by pawn, skipped square: ' + self.square.neighbours[self.forward].name)
       # TODO: introduce ghost pawn
+      ghost = GhostPawn(self, self.color, self.square.neighbours[self.forward])
+      if self.color == 'white':
+        whitePieces.addPiece(ghost)
+      else:
+        blackPieces.addPiece(ghost)
+      self.square.neighbours[self.forward].setPiece(ghost)
     return Piece.moveTo(self, square)
 
 
@@ -197,10 +203,11 @@ class Pawn(Piece):
 # Not enlisted in the army
 class GhostPawn(Piece):
   def __init__(self, parent, color, square):
-    Piece.__init__(self, parent, color, square)
+    Piece.__init__(self, color, square)
     self.value = 1
     self.parent = parent
     self.symbol = 'x'
+    self.directions = []
 
 
 pieces = {'k': King, 'q': Queen, 'n': Knight, 'b': Bishop, 'r': Rook, 'p': Pawn}
