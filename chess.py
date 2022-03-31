@@ -41,12 +41,19 @@ while True:
     # Remove ghost pawns
     for p in whitePieces.pieces:
       if isinstance(p, GhostPawn):
+        p.square.clear()
         whitePieces.pieces.remove(p)
         break
     move = whitePieces.wakeUp()
   else:
     # Nightfall
     print("Black to move")
+    # Remove ghost pawns
+    for p in blackPieces.pieces:
+      if isinstance(p, GhostPawn):
+        p.square.clear()
+        blackPieces.pieces.remove(p)
+        break
     move = blackPieces.wakeUp()
 
   # Let the chess piece move

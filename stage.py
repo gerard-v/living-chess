@@ -36,8 +36,14 @@ class Square:
     oldpiece = self.getPiece()
     if oldpiece:
       if oldpiece.color == 'white':
+        if isinstance(oldpiece, GhostPawn):
+          whitePieces.removePiece(oldpiece.parent)
+          oldpiece.parent.square.clear()
         whitePieces.removePiece(oldpiece)
       if oldpiece.color == 'black':
+        if isinstance(oldpiece, GhostPawn):
+          blackPieces.removePiece(oldpiece.parent)
+          oldpiece.parent.square.clear()
         blackPieces.removePiece(oldpiece)
       if oldpiece.color != piece.color:
         print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
