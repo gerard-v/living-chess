@@ -189,7 +189,6 @@ class Pawn(Piece):
   def moveTo(self, square):
     if square not in [self.square.neighbours[d] for d in self.square.neighbours]:
       print('Giant step forward by pawn, skipped square: ' + self.square.neighbours[self.forward].name)
-      # TODO: introduce ghost pawn
       ghost = GhostPawn(self, self.color, self.square.neighbours[self.forward])
       if self.color == 'white':
         whitePieces.addPiece(ghost)

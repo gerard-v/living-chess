@@ -36,12 +36,12 @@ class Square:
     oldpiece = self.getPiece()
     if oldpiece:
       if oldpiece.color == 'white':
-        if isinstance(oldpiece, GhostPawn):
+        if isinstance(oldpiece, GhostPawn) and isinstance(piece, Pawn):
           whitePieces.removePiece(oldpiece.parent)
           oldpiece.parent.square.clear()
         whitePieces.removePiece(oldpiece)
       if oldpiece.color == 'black':
-        if isinstance(oldpiece, GhostPawn):
+        if isinstance(oldpiece, GhostPawn) and isinstance(piece, Pawn):
           blackPieces.removePiece(oldpiece.parent)
           oldpiece.parent.square.clear()
         blackPieces.removePiece(oldpiece)
@@ -103,7 +103,7 @@ class Square:
 
   def propagate(self, direction, piece):
     self.vibrations.append(piece)
-    if not self.piece and direction in self.neighbours:
+    if not self.piece and direction in self.neighbours: # and not isinstance(self.piece, GhostPawn) ???
       self.neighbours[direction].propagate(direction, piece)
 
   def propagateVibrations(self, piece):
