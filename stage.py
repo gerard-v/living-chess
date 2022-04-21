@@ -103,7 +103,10 @@ class Square:
 
   def propagate(self, direction, piece):
     self.vibrations.append(piece)
-    if not self.piece and direction in self.neighbours: # and not isinstance(self.piece, GhostPawn) ???
+    if (direction in self.neighbours and
+        (not self.piece
+        or isinstance(self.piece, GhostPawn)
+        or isinstance(self.piece, King))):
       self.neighbours[direction].propagate(direction, piece)
 
   def propagateVibrations(self, piece):
