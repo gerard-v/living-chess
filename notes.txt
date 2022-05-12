@@ -20,9 +20,9 @@ Notes
    0  a1 b1  ..... g1 h1
       0               7  = j
 
-Long range vibrations hitting a king:
-- should not stop, but propagate beyond the king (see stage.py line 106)
-
 Idea for testing the changed way of propagating, passing ghost pawns (and kings):
 Create a FEN with a rook on h3 and a single Pawn that can still move 2 squares forward,
 somewhere in the middle, eg on e2 or g2.
+
+The ghost pawn is currently being captured by the black queen, which is not right.
+Options & FEN: -uw "8/8/8/8/8/K6q/4P3/8 w - - 0 1"
