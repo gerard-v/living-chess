@@ -147,7 +147,7 @@ class Square:
     return options
 
   def explore(self, direction):
-    if self.piece:
+    if self.piece and not isinstance(self.piece, GhostPawn):
       return [self]
     lyst = [self]
     if direction in self.neighbours:
