@@ -133,7 +133,7 @@ class Square:
       for d in piece.directions:
         if (d in self.neighbours
             and self.neighbours[d].piece
-            and not isinstance(GhostPawn, self.neighbours[d].piece) # ???
+            and not isinstance(self.neighbours[d].piece, GhostPawn) # ???
             and self.neighbours[d].piece.color != piece.color):
           options.append(self.neighbours[d])
       return options

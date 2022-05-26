@@ -26,3 +26,12 @@ somewhere in the middle, eg on e2 or g2.
 
 The ghost pawn is currently being captured by the black queen, which is not right.
 Options & FEN: -uw "8/8/8/8/8/K6q/4P3/8 w - - 0 1"
+
+For demo time end of June 2022
+  - En passant capture
+  - Promotion
+  - King in check
+  - To capture or not to capture
+
+To research (FEN):
+  - Does a king capture a queen?
