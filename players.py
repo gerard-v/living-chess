@@ -27,7 +27,7 @@ class Army:
         if p.square.name == moveParams[0]:
           reachableSquares = p.square.exploreRange(p) # TODO: p.exploreRange()
           for r in reachableSquares:
-            print(r.name)
+            # print(r.name)
             if r.name == moveParams[1]:
               return [0, p, r]
       print('I can\'t work with this. Please try again.')
@@ -39,6 +39,12 @@ class Army:
     self.pieces.remove(piece)
 
   def wakeUp(self):
+    # Remove ghost pawn, if any
+    for p in self.pieces:
+      if isinstance(p, GhostPawn):
+        p.square.clear()
+        self.pieces.remove(p)
+        break
     biddings = []
     for p in self.pieces:
       biddings.append(p.wakeUp())
