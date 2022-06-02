@@ -27,6 +27,8 @@ somewhere in the middle, eg on e2 or g2.
 The ghost pawn is currently being captured by the black queen, which is not right.
 Options & FEN: -uw "8/8/8/8/8/K6q/4P3/8 w - - 0 1"
 
+When no choices are left for a player, an Exception is thrown. In this case we would like to show either a loss or a stalemate.
+
 For demo time end of June 2022
   - En passant capture
   - Promotion
