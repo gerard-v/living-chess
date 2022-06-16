@@ -49,6 +49,7 @@ class Square:
         print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
       if isinstance(oldpiece, King):
         print(piece.color, "wins!")
+        self.board.print() # to investigate, king still visible
         exit()
     self.piece = piece
     self.active = True

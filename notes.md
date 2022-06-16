@@ -30,9 +30,8 @@ Options & FEN: -uw "8/8/8/8/8/K6q/4P3/8 w - - 0 1"
 When no choices are left for a player, an Exception is thrown. In this case we would like to show either a loss or a stalemate.
 
 For demo time end of June 2022
-  - En passant capture
-  - Promotion
-  - King in check
+  - En passant capture & promotion: "7k/3p3N/6K1/4P3/8/8/8/8 b"
+  - King in check: -uwb "rnb1kbnr/pppp1ppp/8/4p3/6Pq1/5P3/PPPPP2P/RNBQKBNR w"
   - To capture or not to capture
 
 To research (FEN):
