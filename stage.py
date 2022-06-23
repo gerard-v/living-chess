@@ -34,6 +34,9 @@ class Square:
 
   def setPiece(self, piece):
     oldpiece = self.getPiece()
+    self.piece = piece
+    self.active = True
+
     if oldpiece:
       if oldpiece.color == 'white':
         if isinstance(oldpiece, GhostPawn) and isinstance(piece, Pawn):
@@ -47,12 +50,11 @@ class Square:
         blackPieces.removePiece(oldpiece)
       if oldpiece.color != piece.color:
         print(oldpiece.color + ' ' + oldpiece.getName() + ' on ' + self.name + ' captured by a ' + piece.getName())
-      if isinstance(oldpiece, King):
-        print(piece.color, "wins!")
-        self.board.print() # to investigate, king still visible
-        exit()
-    self.piece = piece
-    self.active = True
+        if isinstance(oldpiece, King):
+          self.board.print()  # to investigate, king still visible
+          print(piece.color, "wins!")
+          exit()
+
 
   def promotePawn(self, piece):
     if piece.color == 'white' and self.name[1] == '8':

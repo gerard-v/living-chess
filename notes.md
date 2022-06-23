@@ -35,4 +35,7 @@ For demo time end of June 2022
   - To capture or not to capture
 
 To research (FEN):
-  - Does a king capture a queen?
+  - Does a king capture a queen? Answer: sometimes.
+Examples of capturing a king:
+  - -uw "8/8/8/3k4/8/4Q3/8/7K w"
+  - -uwb "rnb1kbnr/pppp1ppp/8/4p3/6Pq1/5P3/PPPPP2P/RNBQKBNR w"
