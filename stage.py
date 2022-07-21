@@ -57,15 +57,12 @@ class Square:
 
 
   def promotePawn(self, piece):
-    if piece.color == 'white' and self.name[1] == '8':
-      # Replace pawn by queen
-      self.setPiece(Queen('white', self))
-      # Enlist
+    # Replace pawn by queen
+    self.setPiece(Queen(piece.color, self))
+    # Enlist
+    if piece.color == 'white':
       whitePieces.addPiece(self.piece)
-    if piece.color == 'black' and self.name[1] == '1':
-      # Replace pawn by queen
-      self.setPiece(Queen('black', self))
-      # Enlist
+    else:
       blackPieces.addPiece(self.piece)
     print(piece.color, piece.getName(), "on", self.name, "promoted to", self.piece.getName())
 
