@@ -45,28 +45,34 @@ class Army:
         p.square.clear()
         self.pieces.remove(p)
         break
-    biddings = []
+
+    # Reveille
     for p in self.pieces:
-      biddings.append(p.wakeUp())
+      p.wakeUp()
+
+    # Get bids from pieces
+    bids = []
+    for p in self.pieces:
+      bids.append(p.bid())
 
     # Honor the best bid
     best = -1
     bestIndex = None
     results = []
-    for i in range(len(biddings)):
-      if biddings[i][0] == best:
+    for i in range(len(bids)):
+      if bids[i][0] == best:
         results.append(i)
 
-      if biddings[i][0] > best:
+      if bids[i][0] > best:
         results = [i]
-        best = biddings[i][0]
+        best = bids[i][0]
     # In case of a tie, pick a random bid out of the results
     bestIndex = choice(results)
 
     if self.playMode == 'user':
       return self.askMove()
     else:
-      return biddings[bestIndex]
+      return bids[bestIndex]
 
 
 whitePieces = Army('white')
@@ -106,28 +112,35 @@ class Piece:
     self.square.propagateVibrations(self)
 
   def wakeUp(self):
-    options = self.square.exploreRange(self)
+    self.options = self.square.exploreRange(self)
     # Remove squares occupied by own pieces
-    options = [o for o in options if not o.piece or o.piece.color != self.color]
+    self.options = [o for o in self.options if not o.piece or o.piece.color != self.color]
 
     # Remove squares where King can be captured
     if isinstance(self, King):
-      print("Options for King before trimming:", [o.name for o in options])
-      options = [o for o in options if not o.isUnderAttack(self)]
-      print("Options for King after trimming:", [o.name for o in options])
+      print("Options for King before trimming:", [o.name for o in self.options])
+      self.options = [o for o in self.options if not o.isUnderAttack(self)]
+      print("Options for King after trimming:", [o.name for o in self.options])
+
+  # Bidding. A bid consists of [value, bidder, target destination square]
+  def bid(self):
+    # Is the King in check?
+    if isinstance(self, King):
       # Sense vibrations on the current square (are you in danger?)
       if self.square.isUnderAttack(self):
         print(str(self) + ": I'm in check!")
-        if len(options):
-          return [self.value, self, choice(options)]
+        if len(self.options):
+          return [self.value, self, choice(self.options)]
 
     # Can you capture a piece of the opponent?
-    r = [o for o in options if o.piece and o.piece.color != self.color]
+    # List all enemy pieces within reach
+    r = [o for o in self.options if o.piece and o.piece.color != self.color]
+    # Pick the most valuable one
     if r:
       c = max(r, key=lambda s: s.piece.value)
       # Idea: modify bid if more enemy vibrations than friendly vibrations
 
-      if 1 + c.piece.value / self.value >= 2:
+      if c.piece.value >= self.value:
         print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
         return [1 + c.piece.value / self.value, self, c]
       else:
@@ -136,7 +149,7 @@ class Piece:
           return [1 + c.piece.value / self.value, self, c]
         return [0.1, self, c]
     else:
-      r = [o for o in options if not o.piece or o.piece.color != self.color]
+      r = [o for o in self.options if not o.piece or o.piece.color != self.color]
       if r:
         return [1, self, choice(r)]
       else:
