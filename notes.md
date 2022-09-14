@@ -27,15 +27,18 @@ somewhere in the middle, eg on e2 or g2.
 When no choices are left for a player, an Exception is thrown. In this case we would like to show either a loss or a stalemate.
 
 For demo time end of August 2022
-  - En passant capture & promotion: "7k/3p3N/6K1/4P3/8/8/8/8 b"
-  - Ghost pawn is not captured by a queen
-  - King in check: -uwb "rnb1kbnr/pppp1ppp/8/4p3/6Pq1/5P3/PPPPP2P/RNBQKBNR w"
-  - To capture or not to capture
-
+  1. Play as human against computer
+  2. King gets attacked: -uw "8/8/8/3k4/8/4Q3/8/7K w"
+  3. Fool's mate: -uwb "rnb1kbnr/pppp1ppp/8/4p3/6Pq1/5P3/PPPPP2P/RNBQKBNR w"
+  4. Fool's mate, white played by computer
+  5. En passant capture & promotion: "7k/3p3N/6K1/4P3/8/8/8/8 b"
+  6. Ghost pawn does not block vibrations: -uw "8/8/8/8/8/K6q/4P3/8 w - - 0 1"
+  
 To research (FEN):
   - Does a king capture a queen? Answer: sometimes.
-Examples of capturing a king:
+Examples of capturing by a king:
   - -uw "8/8/8/3k4/8/4Q3/8/7K w"
+Fool's mate (#1)
   - -uwb "rnb1kbnr/pppp1ppp/8/4p3/6Pq1/5P3/PPPPP2P/RNBQKBNR w"
 
 Features to add:
