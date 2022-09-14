@@ -162,7 +162,15 @@ class King(Piece):
     self.value = 100
     self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
     self.range = 'short'
+    self.moved = False
 
+  def getCastlingOptions(self):
+    if self.moved:
+      return []
+
+  def moveTo(self, square):
+    self.moved = True
+    return Piece.moveTo(square)
 
 class Queen(Piece):
   def __init__(self, color, square):

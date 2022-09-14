@@ -45,4 +45,9 @@ Features to add:
   1. All pieces sense if they are attacked (not just the king), and by whom
   2. Improve evaluations for biddings by pieces by including how they are attacked and defended
 Example: a queen attacked by a queen is acceptable if she is defended, but a queen attacked by a pawn is probably not acceptable.
-
+  3. Castling: 
+        a) king not moved + rook not moved
+        b) king is not in check
+        c) passing square for king is not attacked
+        d) destination square for king is not attacked
+     TODO: We need to test that kings know when they have moved.
