@@ -84,6 +84,7 @@ class Piece:
     assert color in ['black', 'white']
     self.color = color
     self.square = square
+    self.moved = False
     for r in pieces:
       if isinstance(self,pieces[r]):
         self.symbol = r if self.color == 'black' else r.upper()
@@ -103,6 +104,7 @@ class Piece:
     else:
       score = 0
     square.setPiece(self)
+    self.moved = True
     # Promote pawn if possible
     if isinstance(self, Pawn) and self.forward not in square.neighbours:
       square.promotePawn(self)
@@ -162,14 +164,14 @@ class King(Piece):
     self.value = 100
     self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
     self.range = 'short'
-    self.moved = False
 
-  def getCastlingOptions(self):
+  def exploreRange(self):
+    self.options = self.square.exploreRange()
     if self.moved:
-      return []
+      return self.options
+    print("Vibrations on king square", self.square.vibrations)
 
   def moveTo(self, square):
-    self.moved = True
     return Piece.moveTo(square)
 
 class Queen(Piece):

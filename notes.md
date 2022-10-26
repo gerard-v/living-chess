@@ -50,4 +50,6 @@ Example: a queen attacked by a queen is acceptable if she is defended, but a que
         b) king is not in check
         c) passing square for king is not attacked
         d) destination square for king is not attacked
-     TODO: We need to test that kings know when they have moved.
+        e) intermediate squares are empty
+  
+  TODO: We need to test that kings know when they have moved.
