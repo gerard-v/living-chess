@@ -95,6 +95,9 @@ class Piece:
   def getName(self):
     return type(self).__name__ + " (" + str(self.value) + ")"
 
+  def exploreRange(self):
+    return self.square.exploreRange(self)
+
   def moveTo(self, square):
     print(self, self.square.name, "-", square.name)
     self.square.clear()
@@ -114,7 +117,7 @@ class Piece:
     self.square.propagateVibrations(self)
 
   def wakeUp(self):
-    self.options = self.square.exploreRange(self)
+    self.options = self.exploreRange()
     # Remove squares occupied by own pieces
     self.options = [o for o in self.options if not o.piece or o.piece.color != self.color]
 
@@ -166,13 +169,19 @@ class King(Piece):
     self.range = 'short'
 
   def exploreRange(self):
-    self.options = self.square.exploreRange()
+    self.options = self.square.exploreRange(self)
     if self.moved:
       return self.options
     print("Vibrations on king square", self.square.vibrations)
+    return self.options # TODO: supplement with castling options
 
   def moveTo(self, square):
-    return Piece.moveTo(square)
+    print(self)
+    if (square):
+      print(square.name)
+    else:
+      print(str(square))
+    return Piece.moveTo(self, square)
 
 class Queen(Piece):
   def __init__(self, color, square):

@@ -46,7 +46,8 @@ while True:
 
   # Let the chess piece move
   try:
-    #board.status()
+    #board.status
+    print("moving " + str(move[1]) + " from " + move[1].square.name + " to " + move[2].name)
     captureScore = move[1].moveTo(move[2])
     print(captureScore)
 
