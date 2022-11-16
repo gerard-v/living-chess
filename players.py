@@ -168,11 +168,19 @@ class King(Piece):
     self.directions = [d for d in stage.Chessboard.directions if len(d) < 3]
     self.range = 'short'
 
+  def getCastlingOptions(self):
+    castlingOptions = []
+    if self.moved:
+      return castlingOptions
+    for v in self.square.vibrations:
+      if isinstance(v, Rook) and v.color == self.color:
+        castlingOptions.append(v)
+    return castlingOptions
+
   def exploreRange(self):
     self.options = self.square.exploreRange(self)
-    if self.moved:
-      return self.options
-    print("Vibrations on king square", self.square.vibrations)
+
+    print("Castling options <= ", self.getCastlingOptions())
     return self.options # TODO: supplement with castling options
 
   def moveTo(self, square):
@@ -182,6 +190,7 @@ class King(Piece):
     else:
       print(str(square))
     return Piece.moveTo(self, square)
+
 
 class Queen(Piece):
   def __init__(self, color, square):

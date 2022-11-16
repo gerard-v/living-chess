@@ -53,3 +53,5 @@ Example: a queen attacked by a queen is acceptable if she is defended, but a que
         e) intermediate squares are empty
   
   TODO: We need to test that kings know when they have moved.
+
+Castling possibilities test FEN: "r1b1k2r/p6p/8/8/1B6/8/P6P/4K2R w"
