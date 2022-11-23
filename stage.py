@@ -95,7 +95,7 @@ class Square:
         sum += p.value
     return sum
 
-  def isUnderAttack(self, piece):
+  def isUnderAttack(self, piece): # Perhaps piece can be removed as argument?
     for p in self.vibrations:
       if p.color != piece.color:
         return True
@@ -106,7 +106,7 @@ class Square:
     if (direction in self.neighbours and
         (not self.piece
         or isinstance(self.piece, GhostPawn)
-        or isinstance(self.piece, King))):
+        or (isinstance(self.piece, King) and piece.color != self.piece.color))):
       self.neighbours[direction].propagate(direction, piece)
 
   def propagateVibrations(self, piece):

@@ -170,11 +170,18 @@ class King(Piece):
 
   def getCastlingOptions(self):
     castlingOptions = []
-    if self.moved:
-      return castlingOptions
+    if self.moved or self.square.isUnderAttack(self):
+      return []
     for v in self.square.vibrations:
-      if isinstance(v, Rook) and v.color == self.color:
+      if isinstance(v, Rook) and v.color == self.color and not v.moved:
         castlingOptions.append(v)
+
+    if not castlingOptions:
+      return []
+    vibrations1 = self.square.neighbours['E'].vibrations + self.square.neighbours['E'].neighbours['E'].vibrations
+    vibrations2 = self.square.neighbours['W'].vibrations + self.square.neighbours['W'].neighbours['W'].vibrations
+    print('vibrations 1: ', vibrations1)
+    print('vibrations 2: ', vibrations2)
     return castlingOptions
 
   def exploreRange(self):
