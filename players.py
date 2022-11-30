@@ -169,20 +169,31 @@ class King(Piece):
     self.range = 'short'
 
   def getCastlingOptions(self):
-    castlingOptions = []
+    rooksToCastleWith = []
     if self.moved or self.square.isUnderAttack(self):
       return []
     for v in self.square.vibrations:
       if isinstance(v, Rook) and v.color == self.color and not v.moved:
-        castlingOptions.append(v)
+        rooksToCastleWith.append(v)
 
-    if not castlingOptions:
+    if not rooksToCastleWith:
       return []
-    vibrations1 = self.square.neighbours['E'].vibrations + self.square.neighbours['E'].neighbours['E'].vibrations
-    vibrations2 = self.square.neighbours['W'].vibrations + self.square.neighbours['W'].neighbours['W'].vibrations
-    print('vibrations 1: ', vibrations1)
-    print('vibrations 2: ', vibrations2)
-    return castlingOptions
+    vibrationsEast = self.square.neighbours['E'].vibrations + self.square.neighbours['E'].neighbours['E'].vibrations
+    vibrationsWest = self.square.neighbours['W'].vibrations + self.square.neighbours['W'].neighbours['W'].vibrations
+    print('vibrations East: ', vibrationsEast)
+    print('vibrations West: ', vibrationsWest)
+
+    for v in vibrationsEast:
+      for rook in rooksToCastleWith:
+        if v.color != self.color and rook.square.name[0] == 'h':
+          rooksToCastleWith.remove(rook)
+
+    for v in vibrationsWest:
+      for rook in rooksToCastleWith:
+        if v.color != self.color and rook.square.name[0] == 'a':
+          rooksToCastleWith.remove(rook)
+
+    return rooksToCastleWith
 
   def exploreRange(self):
     self.options = self.square.exploreRange(self)
