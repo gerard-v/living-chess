@@ -193,12 +193,20 @@ class King(Piece):
         if v.color != self.color and rook.square.name[0] == 'a':
           rooksToCastleWith.remove(rook)
 
-    return rooksToCastleWith
+    castlingOptions = []
+    for rook in rooksToCastleWith:
+      if rook.square.name[0] == 'a':
+        castlingOptions.append(self.square.neighbours['W'].neighbours['W'])
+      if rook.square.name[0] == 'h':
+        castlingOptions.append(self.square.neighbours['E'].neighbours['E'])
+
+    return castlingOptions
 
   def exploreRange(self):
-    self.options = self.square.exploreRange(self)
+    self.options = self.square.exploreRange(self) + self.getCastlingOptions()
 
-    print("Castling options <= ", self.getCastlingOptions())
+    #print("Castling options <= ", self.getCastlingOptions())
+    print("Options = ", self.options)
     return self.options # TODO: supplement with castling options
 
   def moveTo(self, square):
