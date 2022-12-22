@@ -51,6 +51,6 @@ Example: a queen attacked by a queen is acceptable if she is defended, but a que
         c) passing square for king is not attacked
         d) destination square for king is not attacked
         e) intermediate squares are empty
-  
+  When castling, we could call a method "castle", taking as parameters the direction and the rook to castle with.
 
 Castling possibilities test FEN: "r1b1k2r/p6p/8/8/1B6/8/P6P/4K2R w"

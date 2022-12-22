@@ -25,7 +25,7 @@ class Army:
 
       for p in self.pieces:
         if p.square.name == moveParams[0]:
-          reachableSquares = p.square.exploreRange(p) # TODO: p.exploreRange()
+          reachableSquares = p.exploreChoices()
           for r in reachableSquares:
             # print(r.name)
             if r.name == moveParams[1]:
@@ -95,7 +95,7 @@ class Piece:
   def getName(self):
     return type(self).__name__ + " (" + str(self.value) + ")"
 
-  def exploreRange(self):
+  def exploreChoices(self):
     return self.square.exploreRange(self)
 
   def moveTo(self, square):
@@ -117,7 +117,7 @@ class Piece:
     self.square.propagateVibrations(self)
 
   def wakeUp(self):
-    self.options = self.exploreRange()
+    self.options = self.exploreChoices()
     # Remove squares occupied by own pieces
     self.options = [o for o in self.options if not o.piece or o.piece.color != self.color]
 
@@ -202,19 +202,22 @@ class King(Piece):
 
     return castlingOptions
 
-  def exploreRange(self):
+  def exploreChoices(self):
     self.options = self.square.exploreRange(self) + self.getCastlingOptions()
-
     #print("Castling options <= ", self.getCastlingOptions())
     print("Options = ", self.options)
-    return self.options # TODO: supplement with castling options
+    return self.options # TODO: use castling moves, if desired
 
-  def moveTo(self, square):
+  def moveTo(self, square): # a move for a king
     print(self)
     if (square):
       print(square.name)
     else:
       print(str(square))
+    print (square.name)
+    if square.name not in [self.square.neighbours[s].name for s in self.square.neighbours]:
+      print("Castling!!! Direction = ? See notes", )
+
     return Piece.moveTo(self, square)
 
 
