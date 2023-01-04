@@ -216,7 +216,12 @@ class King(Piece):
       print(str(square))
     print (square.name)
     if square.name not in [self.square.neighbours[s].name for s in self.square.neighbours]:
-      print("Castling!!! Direction = ? See notes", )
+      if square.name[0] == 'c':
+        print("Castling!!! Piece to castle with =", square.neighbours['W'].neighbours['W'].piece)
+        square.neighbours['W'].neighbours['W'].piece.moveTo(square.neighbours['E'])
+      if square.name[0] == 'g':
+        print("Castling!!! Piece to castle with =", square.neighbours['E'].piece)
+        square.neighbours['E'].piece.moveTo(square.neighbours['W'])
 
     return Piece.moveTo(self, square)
 
