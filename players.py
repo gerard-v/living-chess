@@ -142,24 +142,30 @@ class Piece:
     r = [o for o in self.options if o.piece and o.piece.color != self.color]
     # Pick the most valuable one
     if r:
-      c = max(r, key=lambda s: s.piece.value)
+      victimSquare = max(r, key=lambda s: s.piece.value)
+      victim = victimSquare.piece
       # Idea: modify bid if more enemy vibrations than friendly vibrations
 
-      if c.piece.value >= self.value:
-        print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
-        return [1 + c.piece.value / self.value, self, c]
+      if victim.value >= self.value:
+        return self.getCaptureBid(victim)
       else:
-        if c.control() == self.color and c.gain(self.color) > 0:
-          print("bid by " + self.getName() + " on " + self.square.name + ": " + str(1 + c.piece.value / self.value))
-          return [1 + c.piece.value / self.value, self, c]
-        return [0.1, self, c]
+        if victimSquare.control() == self.color and victimSquare.gain(self.color) > 0:
+          return self.getCaptureBid(victim)
+        return [0.1, self, victim]
     else:
       r = [o for o in self.options if not o.piece or o.piece.color != self.color]
       if r:
         return [1, self, choice(r)]
-      else:
+      else: 
         return [0, self, None] # no moves available
 
+  def getCaptureBid(self, victim):
+    value = victim.value
+    if victim.square.isDefended(victim):
+      print("Square of victim is being defended")
+      value -= self.value
+    print("bid by " + self.getName() + " on " + self.square.name + ": " + str(value))
+    return [value, self, victim.square]
 
 class King(Piece):
   def __init__(self, color, square):

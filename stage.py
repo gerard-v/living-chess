@@ -100,6 +100,12 @@ class Square:
       if p.color != piece.color:
         return True
     return False
+    
+  def isDefended(self, piece):
+    for p in self.vibrations:
+      if p.color == piece.color:
+        return True
+    return False
 
   def propagate(self, direction, piece):
     self.vibrations.append(piece)
