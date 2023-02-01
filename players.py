@@ -136,15 +136,16 @@ class Piece:
         print(str(self) + ": I'm in check!")
         if len(self.options):
           return [self.value, self, choice(self.options)]
+        # TODO else: check for checkmate
 
     # Can you capture a piece of the opponent?
     # List all enemy pieces within reach
     r = [o for o in self.options if o.piece and o.piece.color != self.color]
-    # Pick the most valuable one
     if r:
-      victimSquare = max(r, key=lambda s: s.piece.value)
+      # Pick the most valuable one
+      victimSquare = max(r, key=lambda s: s.piece.value - self.value)
       victim = victimSquare.piece
-      # Idea: modify bid if more enemy vibrations than friendly vibrations
+      print ("victim: " + victim.symbol + " on " + victimSquare.name)
 
       if victim.value >= self.value:
         return self.getCaptureBid(victim)

@@ -3,6 +3,8 @@ Notes
 - Vibrations are important not just on squares around you but also on the square where you are
 - Friendly vibrations mean safety, or plus points, enemy vibrations are danger or minus points
 - Strong pieces should be extra sensitive to enemy vibrations
+- Idea: modify bid if more enemy vibrations than friendly vibrations
+
 
 - Question: should we see the vibrations as continuously present or as events?...
 - refactor determination of neighbours for squares
