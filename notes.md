@@ -2,8 +2,8 @@ Notes
 - At daybreak & nightfall: pass on vibrations, store in squares
 - Vibrations are important not just on squares around you but also on the square where you are
 - Friendly vibrations mean safety, or plus points, enemy vibrations are danger or minus points
-- Strong pieces should be extra sensitive to enemy vibrations
-- Idea: modify bid if more enemy vibrations than friendly vibrations
+- Strong pieces should be extra sensitive to enemy vibrations (eg a Queen being attacked by a Knight)
+- Idea: modify bid if enemy vibrations on the victim square (V)
 
 
 - Question: should we see the vibrations as continuously present or as events?...

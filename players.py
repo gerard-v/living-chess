@@ -136,7 +136,14 @@ class Piece:
         print(str(self) + ": I'm in check!")
         if len(self.options):
           return [self.value, self, choice(self.options)]
-        # TODO else: check for checkmate
+        # TODO else: check for checkmate, or simply give up (if checking all possibilities to prevent mate proves too difficult)
+        # An improvement could be to not just look for ways to escape, but also ask fellow pieces if they can capture the attacker
+
+    # Sense vibrations on the current square (are you in danger?)
+    if self.square.isUnderAttack(self):
+      value = self.value
+      #if self.square.isDefended():
+      # subtract the enemy's value (what you win) from the fear bid, see getCaptureBid below
 
     # Can you capture a piece of the opponent?
     # List all enemy pieces within reach
