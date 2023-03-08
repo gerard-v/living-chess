@@ -139,16 +139,34 @@ class Piece:
         # TODO else: check for checkmate, or simply give up (if checking all possibilities to prevent mate proves too difficult)
         # An improvement could be to not just look for ways to escape, but also ask fellow pieces if they can capture the attacker
 
+    '''
     # Sense vibrations on the current square (are you in danger?)
     if self.square.isUnderAttack(self):
       value = self.value
       #if self.square.isDefended():
-      # subtract the enemy's value (what you win) from the fear bid, see getCaptureBid below
+      # subtract the enemy's value (what you win) from the escape bid, see getCaptureBid below
 
     # Can you capture a piece of the opponent?
     # List all enemy pieces within reach
-    r = [o for o in self.options if o.piece and o.piece.color != self.color]
-    if r:
+    '''
+    
+    r = self.options #[o for o in self.options if o.piece and o.piece.color != self.color]
+    
+    if not r:
+      return [0, self, None] # no moves available
+
+    r = [[0.1, self, dest] for dest in r]
+    
+    for b in r:
+      dest = b[2]
+      if dest.piece: # TODO: check if own pieces already excluded
+        b[0] += dest.piece.value
+      if dest.isUnderAttack(self):
+        b[0] -= self.value
+    
+    return choice(r) # temporary short-cut
+    
+    '''if r:
       # Pick the most valuable one
       victimSquare = max(r, key=lambda s: s.piece.value - self.value)
       victim = victimSquare.piece
@@ -166,6 +184,7 @@ class Piece:
         return [1, self, choice(r)]
       else: 
         return [0, self, None] # no moves available
+        '''
 
   def getCaptureBid(self, victim):
     value = victim.value
