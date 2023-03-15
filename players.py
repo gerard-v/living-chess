@@ -157,14 +157,20 @@ class Piece:
 
     r = [[0.1, self, dest] for dest in r]
     
+    best = None
+    
     for b in r:
       dest = b[2]
       if dest.piece: # TODO: check if own pieces already excluded
         b[0] += dest.piece.value
-      if dest.isUnderAttack(self):
+      if self.square.isUnderAttack(self) and not dest.isUnderAttack(self):
+        b[0] += self.value
+      if not self.square.isUnderAttack(self) and dest.isUnderAttack(self):
         b[0] -= self.value
-    
-    return choice(r) # temporary short-cut
+      if not best or b[0] > best[0]:
+        best = b
+       
+    return best
     
     '''if r:
       # Pick the most valuable one
