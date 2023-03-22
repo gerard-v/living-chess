@@ -161,7 +161,8 @@ class Piece:
     
     for b in r:
       dest = b[2]
-      if dest.piece: # TODO: check if own pieces already excluded
+      if dest.piece and (not isinstance(dest.piece, GhostPawn) or isinstance(self, Pawn)):
+      # TODO: check if own pieces already excluded
         b[0] += dest.piece.value
       if self.square.isUnderAttack(self) and not dest.isUnderAttack(self):
         b[0] += self.value
