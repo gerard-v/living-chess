@@ -86,20 +86,12 @@ class Square:
     else:
       return None
 
-  def gain(self, color):
-    sum = 0
-    for p in self.vibrations:
-      if p.color == color:
-        sum -= p.value
-      else:
-        sum += p.value
-    return sum
-
   def isUnderAttack(self, piece): # Perhaps piece can be removed as argument?
+    attackers = [] # [v in self.vibrations if v.color != piece.color]
     for p in self.vibrations:
       if p.color != piece.color:
-        return True
-    return False
+        attackers.append(p)
+    return attackers
     
   def isDefended(self, piece):
     for p in self.vibrations:

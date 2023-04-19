@@ -148,6 +148,10 @@ class Piece:
     
     best = None
     
+    attackers = self.square.isUnderAttack(self)
+    for a in attackers:
+      print("Attacker sensed one my square (" + self.square.name +"): " + a.symbol)
+    
     for b in r:
       dest = b[2]
       if dest.piece and (not isinstance(dest.piece, GhostPawn) or isinstance(self, Pawn)):
