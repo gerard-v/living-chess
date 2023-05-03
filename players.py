@@ -80,9 +80,9 @@ blackPieces = Army('black')
 
 
 class Piece:
-  def __init__(self, color, square):
-    assert color in ['black', 'white']
-    self.color = color
+  def __init__(self, army, square):
+    self.army = army
+    self.color = army.color
     self.square = square
     self.moved = False
     for r in pieces:
@@ -150,7 +150,11 @@ class Piece:
     
     attackers = self.square.isUnderAttack(self)
     for a in attackers:
-      print("Attacker sensed one my square (" + self.square.name +"): " + a.symbol)
+      print("Attacker sensed on my square (" + self.square.name +"): " + a.symbol)
+      
+    if isinstance(self, King) and attackers: # TODO: AND attackers.length == 1
+      for a in attackers:
+        pass #a.bounty = self.value # TODO: declare bounty on attacker in army (shared space for communication)
     
     for b in r:
       dest = b[2]
