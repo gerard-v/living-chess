@@ -9,6 +9,7 @@ import stage # for directions in class Chessboard
 
 class Army:
   playMode = 'computer'
+  wanted = {}
 
   def __init__(self, color):
     assert color in ['black', 'white']
@@ -54,6 +55,11 @@ class Army:
     bids = []
     for p in self.pieces:
       bids.append(p.bid())
+      
+    # Check bounty list
+    print("Wanted: ")
+    for w in self.wanted:
+      print(str(w), self.wanted[w])  
 
     # Honor the best bid
     best = -1
@@ -151,10 +157,11 @@ class Piece:
     attackers = self.square.isUnderAttack(self)
     for a in attackers:
       print("Attacker sensed on my square (" + self.square.name +"): " + a.symbol)
-      
-    if isinstance(self, King) and attackers: # TODO: AND attackers.length == 1
-      for a in attackers:
-        pass #a.bounty = self.value # TODO: declare bounty on attacker in army (shared space for communication)
+      if not a in self.army.wanted:
+        self.army.wanted[a] = self.value # the bounty on the attacker equals the value of the piece under attack
+      else:
+        if self.value > self.army.wanted[a]:
+          self.army.wanted[a] = self.value
     
     for b in r:
       dest = b[2]
