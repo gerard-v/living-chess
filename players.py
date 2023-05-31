@@ -34,6 +34,7 @@ class Army:
       print('I can\'t work with this. Please try again.')
 
   def addPiece(self, piece):
+    piece.army = self
     self.pieces.append(piece)
 
   def removePiece(self, piece):
@@ -48,6 +49,7 @@ class Army:
         break
 
     # Reveille
+    self.wanted = {}
     for p in self.pieces:
       p.wakeUp()
 
@@ -58,6 +60,8 @@ class Army:
       
     # Check bounty list
     print("Wanted: ")
+    if (not self.wanted):
+      print("-")
     for w in self.wanted:
       print(str(w), self.wanted[w])  
 
@@ -86,9 +90,9 @@ blackPieces = Army('black')
 
 
 class Piece:
-  def __init__(self, army, square):
-    self.army = army
-    self.color = army.color
+  def __init__(self, color, square):
+    self.army = None
+    self.color = color
     self.square = square
     self.moved = False
     for r in pieces:
@@ -303,7 +307,7 @@ class Pawn(Piece):
 
 
 # Virtual piece for enabling en passant capture
-# Not enlisted in the army
+# Enlisted in the army??? (via addPiece(ghost))
 class GhostPawn(Piece):
   def __init__(self, parent, color, square):
     Piece.__init__(self, color, square)

@@ -187,7 +187,7 @@ class Chessboard:
           else:
             color = 'black'
 
-          self.squares[i][j].setPiece(pieces[c.lower()](whitePieces if color == 'white' else blackPieces, self.squares[i][j]))
+          self.squares[i][j].setPiece(pieces[c.lower()](color, self.squares[i][j]))
           self.squares[i][j].active = False
 
           if color == 'white':
