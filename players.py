@@ -140,14 +140,21 @@ class Piece:
   # Bidding. A bid consists of [value, bidder, target destination square]
   def bid(self):
     # Is the King in check?
-    if isinstance(self, King):
-      # Sense vibrations on the current square (are you in danger?)
-      if self.square.isUnderAttack(self):
-        print(str(self) + ": I'm in check!")
-        if len(self.options):
-          return [self.value, self, choice(self.options)]
-        # TODO else: check for checkmate, or simply give up (if checking all possibilities to prevent mate proves too difficult)
-        # An improvement could be to not just look for ways to escape, but also ask fellow pieces if they can capture the attacker
+    if isinstance(self, King) and self.square.isUnderAttack(self):
+      print(str(self) + ": I'm in check!")
+      #if len(self.options):
+      #  return [self.value, self, choice(self.options)]
+      # TODO else: check for checkmate, or simply give up (if checking all possibilities to prevent mate proves too difficult)
+      # An improvement could be to not just look for ways to escape, but also ask fellow pieces if they can capture the attacker
+
+    attackers = self.square.isUnderAttack(self)
+    for a in attackers:
+      print("Attacker sensed on my square (" + self.square.name +"): " + a.symbol)
+      if not a in self.army.wanted:
+        self.army.wanted[a] = self.value # the bounty on the attacker equals the value of the piece under attack
+      else:
+        if self.value > self.army.wanted[a]:
+          self.army.wanted[a] = self.value
     
     r = self.options #[o for o in self.options if o.piece and o.piece.color != self.color]
     
@@ -158,14 +165,7 @@ class Piece:
     
     best = None
     
-    attackers = self.square.isUnderAttack(self)
-    for a in attackers:
-      print("Attacker sensed on my square (" + self.square.name +"): " + a.symbol)
-      if not a in self.army.wanted:
-        self.army.wanted[a] = self.value # the bounty on the attacker equals the value of the piece under attack
-      else:
-        if self.value > self.army.wanted[a]:
-          self.army.wanted[a] = self.value
+
     
     for b in r:
       dest = b[2]
