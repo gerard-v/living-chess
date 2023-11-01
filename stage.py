@@ -86,7 +86,7 @@ class Square:
     else:
       return None
 
-  def isUnderAttack(self, piece): # Perhaps piece can be removed as argument?
+  def getAttackers(self, piece): # Perhaps piece can be removed as argument?
     attackers = [] # [v in self.vibrations if v.color != piece.color]
     for p in self.vibrations:
       if p.color != piece.color:

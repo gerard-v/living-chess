@@ -134,20 +134,20 @@ class Piece:
     # Remove squares where King can be captured
     if isinstance(self, King):
       print("Options for King before trimming:", [o.name for o in self.options])
-      self.options = [o for o in self.options if not o.isUnderAttack(self)]
+      self.options = [o for o in self.options if not o.getAttackers(self)]
       print("Options for King after trimming:", [o.name for o in self.options])
 
   # Bidding. A bid consists of [value, bidder, target destination square]
   def bid(self):
     # Is the King in check?
-    if isinstance(self, King) and self.square.isUnderAttack(self):
+    if isinstance(self, King) and self.square.getAttackers(self):
       print(str(self) + ": I'm in check!")
       #if len(self.options):
       #  return [self.value, self, choice(self.options)]
       # TODO else: check for checkmate, or simply give up (if checking all possibilities to prevent mate proves too difficult)
       # An improvement could be to not just look for ways to escape, but also ask fellow pieces if they can capture the attacker
 
-    attackers = self.square.isUnderAttack(self)
+    attackers = self.square.getAttackers(self)
     for a in attackers:
       print("Attacker sensed on my square (" + self.square.name +"): " + a.symbol)
       if not a in self.army.wanted:
@@ -171,22 +171,26 @@ class Piece:
       dest = b[2]
       if dest.piece and (not isinstance(dest.piece, GhostPawn) or isinstance(self, Pawn)):
         b[0] += dest.piece.value
-      if self.square.isUnderAttack(self) and not dest.isUnderAttack(self):
-        b[0] += self.value
-      if not self.square.isUnderAttack(self) and dest.isUnderAttack(self):
-        b[0] -= self.value
+      if self.square.getAttackers(self) and not dest.getAttackers(self):
+        b[0] += self.value # saves its own skin
+      if not self.square.getAttackers(self) and dest.getAttackers(self):
+        if not dest.isDefended(self):
+          b[0] -= self.value # brings itself in danger
+        else:
+          # Find least valuable attacker and compare against own value
+          attackers = dest.getAttackers(self)
+          minAttacker = 2000
+          for a in attackers:
+            if a.value < minAttacker:
+              minAttacker = a.value
+          print ("original bid:", b[0])
+          b[0] = b[0] - self.value + minAttacker
+          print ("minAttacker value: ", minAttacker)
+          print ("bid of", self, "on", self.square.name, "move to (", dest.name, "): ", b[0])
       if not best or b[0] > best[0]:
         best = b
        
     return best
-    
-  def getCaptureBid(self, victim):
-    value = victim.value
-    if victim.square.isDefended(victim):
-      print("Square of victim is being defended")
-      value -= self.value
-    print("bid by " + self.getName() + " on " + self.square.name + ": " + str(value))
-    return [value, self, victim.square]
 
 class King(Piece):
   def __init__(self, color, square):
@@ -197,7 +201,7 @@ class King(Piece):
 
   def getCastlingOptions(self):
     rooksToCastleWith = []
-    if self.moved or self.square.isUnderAttack(self):
+    if self.moved or self.square.getAttackers(self):
       return []
     for v in self.square.vibrations:
       if isinstance(v, Rook) and v.color == self.color and not v.moved:
