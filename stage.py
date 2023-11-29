@@ -196,6 +196,16 @@ class Chessboard:
             blackPieces.addPiece(self.squares[i][j].getPiece())
 
           j += 1
+    # Add ghost pawn if supplied in the FEN
+    ghostpawnMarker = fields[3]
+    if ghostpawnMarker != '-':
+      if (ghostpawnMarker[1] == '3'):
+        s = self.getSquareByName(ghostpawnMarker)
+        s.setPiece(GhostPawn(s.neighbours['N'].getPiece(), 'white', s))
+        whitePieces.addPiece(s.getPiece())
+
+  def getSquareByName(self, name):
+    return self.squares[ord(name[1])-49][ord(name[0])-97]
 
   def emitVibrations(self):
     for p in whitePieces.pieces + blackPieces.pieces:

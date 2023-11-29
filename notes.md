@@ -1,6 +1,6 @@
 Notes
 - Experiment with increasing the bounty for a piece that attacks multiple other pieces at once (eg fork)
-- High valued pieces (eg king) are sometimes moving too easyily without reason. 
+- High valued pieces (eg king) are sometimes moving too easily without reason. 
   Perhaps give them some hesitation, dependent on the size of the army or armies.
 - Kings sometimes are put in check by pieces moving away from line of defense. We want to prevent this as it is illegal.
   We could detect these vibrations as "X-rays" and take note of them when attempting to move a piece.
