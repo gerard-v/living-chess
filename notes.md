@@ -4,6 +4,7 @@ Notes
   Perhaps give them some hesitation, dependent on the size of the army or armies.
 - Kings sometimes are put in check by pieces moving away from line of defense. We want to prevent this as it is illegal.
   We could detect these vibrations as "X-rays" and take note of them when attempting to move a piece.
+- Ghost pawn is added from FEN
 
    i
 

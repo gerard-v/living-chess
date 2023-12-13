@@ -203,6 +203,10 @@ class Chessboard:
         s = self.getSquareByName(ghostpawnMarker)
         s.setPiece(GhostPawn(s.neighbours['N'].getPiece(), 'white', s))
         whitePieces.addPiece(s.getPiece())
+      elif (ghostpawnMarker[1] == '6'):
+        s = self.getSquareByName(ghostpawnMarker)
+        s.setPiece(GhostPawn(s.neighbours['S'].getPiece(), 'black', s))
+        blackPieces.addPiece(s.getPiece())
 
   def getSquareByName(self, name):
     return self.squares[ord(name[1])-49][ord(name[0])-97]
