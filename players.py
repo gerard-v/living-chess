@@ -83,6 +83,19 @@ class Army:
       return self.askMove()
     else:
       return bids[bestIndex]
+  
+  def negotiate():
+    # Let the pieces bid in rounds
+    highestBid = 0
+    # Get bids from pieces
+    bids = []
+    for p in self.pieces:
+      pass
+      #bids.append(p.bid(highestBid))
+    # Sort bids
+    # After each round, communicate the highest bid as input for the next round
+    # highestBid = ...
+    
 
 
 whitePieces = Army('white')
@@ -311,7 +324,6 @@ class Pawn(Piece):
 
 
 # Virtual piece for enabling en passant capture
-# Enlisted in the army??? (via addPiece(ghost))
 class GhostPawn(Piece):
   def __init__(self, parent, color, square):
     Piece.__init__(self, color, square)
