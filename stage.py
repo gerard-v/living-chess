@@ -225,15 +225,16 @@ class Chessboard:
     for rank in range(8):
       for square in self.squares[7 - rank]:  # from 7 to 0, to print top rank first
         if square.active:
-          print(colors.RED + str(square) + colors.ENDC, end=' ')
+          #print(colors.RED + str(square) + colors.ENDC, end=' ')
+          print(square, end=' ')
           square.active = False
         else:
-          if square.control() == 'white':
-            print(colors.GREEN + str(square) + colors.ENDC, end=' ')
-          elif square.control() == 'black':
-            print(colors.BLUE + str(square) + colors.ENDC, end=' ')
-          else:
-            print(square, end=' ')
+          #if square.control() == 'white':
+          #  print(colors.GREEN + str(square) + colors.ENDC, end=' ')
+          #elif square.control() == 'black':
+          #  print(colors.BLUE + str(square) + colors.ENDC, end=' ')
+          #else:
+          print(square, end=' ')
 
       print()
     print()
